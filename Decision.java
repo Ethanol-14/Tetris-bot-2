@@ -155,6 +155,8 @@ public class Decision {
 				}
 			}
 		}
+		
+		return cost;
 	}
 	
 	private static int DecideMode(short[][] board) {
