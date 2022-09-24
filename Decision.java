@@ -52,12 +52,18 @@ public class Decision {
 	
 	private static int CalculateCost(int[][] minoCoordinates, short[][] board) {
 		
+		int cost = 0;
+		int bumpCost = 1;
+		int holeCost = 20;
+		
 		//Drop piece
 		boolean contact = false;
 		int yPos = 17;
 		
 		while (!contact && yPos >= 0) {
+			
 			for (int mino = 0; mino < minoCoordinates.length; mino++) {
+				
 				if (board[minoCoordinates[mino][0]][yPos+minoCoordinates[mino][1]] == 1) {
 					//we are immersed in floor
 					contact = true;
@@ -70,8 +76,85 @@ public class Decision {
 		}
 		yPos++;
 		
-		//Clear lines
+		//Update board to contain dropped piece
+		for (int mino = 0; mino < minoCoordinates.length; mino++) {
+			board[minoCoordinates[mino][0]][minoCoordinates[mino][1]+yPos] = 1;
+		}
 		
+		//Clear lines
+		int sum = 0;
+		int linesCleared = 0;
+		
+		for (int y = 0; y < 20; y++) {
+			sum = 0;
+			
+			for (int x = 0; x < 10; x++) {
+				board[x][y] = board[x][y+linesCleared];
+			}
+			
+			for (int x = 0; x < 10; x++) {
+				sum += board[x][y];
+			}
+			
+			if (sum == 10) {
+				linesCleared += 1;
+			}
+			if (sum == 0) {
+				break;
+			}
+		}
+		
+		//Calculate cost
+		//Hole costs
+		int holeCostDecay = 0;
+		
+		for (int mino = 0; mino < minoCoordinates.length; mino++) {
+			
+			for (int y = minoCoordinates[mino][1]+yPos-1; y >= 0; y--) {
+				
+				if (board[minoCoordinates[mino][0]][y] == 0) {
+					cost += holeCost-(holeCostDecay);
+				}
+				holeCostDecay++;
+			}
+		}
+		
+		//Board flatness (or rather, bumpiness)
+		int yLevel = 0;
+		for (int y = 19; y > 0; y--) { //get to the highest block in the first column (the column at x = 0)
+			
+			if (board[0][y] == 1) {
+				yLevel = y+1;
+				break;
+			}
+		}
+		
+		for (int x = 0; x < 10; x++) {
+			
+			if (yLevel != 0) {
+				
+				if (board[x][yLevel] == 1) { //we need to search up
+					
+					yLevel++;
+					cost += bumpCost;
+					
+					while (board[x][yLevel] == 1) {
+						yLevel++;
+						cost += bumpCost;
+					}
+				}
+			}
+			if (board[x][yLevel-1] == 0) { //we need to search down
+				
+				yLevel--;
+				cost += bumpCost;
+				
+				while (board[x][yLevel] == 0) {
+					yLevel--;
+					cost += bumpCost;
+				}
+			}
+		}
 	}
 	
 	private static int DecideMode(short[][] board) {
@@ -90,6 +173,7 @@ public class Decision {
 			sum = 0;
 			
 			for (int x = 0; x < board.length-1; x++) {
+				
 				for (int y = 0; y < 3; y++) {
 					sum += board[x][y];
 				}
@@ -106,5 +190,4 @@ public class Decision {
 			return 1;
 		}
 	}
-	
 }
