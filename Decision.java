@@ -1,7 +1,6 @@
 package tetrismode;
 
 public class Decision {
-	
 	private static int holeCost = -20;
 	private static int bumpCost = -1;
 	
@@ -23,10 +22,26 @@ public class Decision {
 		return null;
 	}
 	
-	private static int[] TestCombinations(int piece, short[][] board, int stackingMode) {
+	private static int[] TestCombinations(int piece, short[][] board, int range) {
+		
+		int[][] pieceData = new int[4][2];
 		
 		if (piece == 0) { //O piece
-			
+			for (int i = 0; i < range-1; i++) {
+				pieceData[0][0] = i;
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = i;
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = i+1;
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = i+1;
+				pieceData[3][1] = 1;
+				
+				CalculateCost(pieceData, board, range);
+			}
 		}
 		if (piece == 1) { //I piece
 			
@@ -50,7 +65,7 @@ public class Decision {
 		return null; //error return
 	}
 	
-	private static int CalculateCost(int[][] minoCoordinates, short[][] board, int stackingMode) {
+	private static int CalculateCost(int[][] minoCoordinates, short[][] board, int range) {
 		
 		int cost = 0;
 		int bumpCost = 1;
@@ -113,7 +128,7 @@ public class Decision {
 			for (int y = minoCoordinates[mino][1]+yPos-1; y >= 0; y--) {
 				
 				if (board[minoCoordinates[mino][0]][y] == 0) {
-					cost += holeCost-(holeCostDecay);
+					cost += holeCost-holeCostDecay;
 				}
 				holeCostDecay++;
 			}
@@ -122,37 +137,35 @@ public class Decision {
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
 		for (int y = 19; y > 0; y--) { //get to the highest block in the first column (the column at x = 0)
-			
 			if (board[0][y] == 1) {
 				yLevel = y+1;
 				break;
 			}
 		}
 		
-		for (int x = 0; x < 10; x++) {
+		for (int x = 1; x < range; x++) {
 			
-			if (yLevel != 0) {
-				
-				if (board[x][yLevel] == 1) { //we need to search up
-					
+			if (board[x][yLevel] == 1) { //we need to search up
+				while (board[x][yLevel] == 1) {
 					yLevel++;
 					cost += bumpCost;
 					
-					while (board[x][yLevel] == 1) {
-						yLevel++;
-						cost += bumpCost;
+					if (yLevel >= 17) {
+						break;
 					}
 				}
 			}
-			if (board[x][yLevel-1] == 0) { //we need to search down
-				
-				yLevel--;
-				cost += bumpCost;
-				
+			else if (board[x][yLevel-1] == 0) { //we need to search down so long as we're not at the bottom of our board
 				while (board[x][yLevel] == 0) {
 					yLevel--;
 					cost += bumpCost;
+					
+					if (yLevel < 0) {
+						break;
+					}
 				}
+				yLevel++;
+				cost -= bumpCost;
 			}
 		}
 		
