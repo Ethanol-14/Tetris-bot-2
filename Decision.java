@@ -23,34 +23,34 @@ public class Decision {
 		return null;
 	}
 	
-	private static int[] TestCombinations(int piece, short[][] board) {
+	private static int[] TestCombinations(int piece, short[][] board, int stackingMode) {
 		
-		if (piece == 0) {
+		if (piece == 0) { //O piece
 			
 		}
-		if (piece == 1) {
+		if (piece == 1) { //I piece
 			
 		}
-		if (piece == 2) {
+		if (piece == 2) { //S piece
 			
 		}
-		if (piece == 3) {
+		if (piece == 3) { //Z piece
 			
 		}
-		if (piece == 4) {
+		if (piece == 4) { //L piece
 			
 		}
-		if (piece == 5) {
+		if (piece == 5) { //J piece
 			
 		}
-		if (piece == 6) {
+		if (piece == 6) { //T piece
 			
 		}
 		
 		return null; //error return
 	}
 	
-	private static int CalculateCost(int[][] minoCoordinates, short[][] board) {
+	private static int CalculateCost(int[][] minoCoordinates, short[][] board, int stackingMode) {
 		
 		int cost = 0;
 		int bumpCost = 1;
