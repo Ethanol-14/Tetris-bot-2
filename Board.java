@@ -1,11 +1,10 @@
 package tetrismode;
 
 public class Board {
+	private static byte[][] board = new byte[10][20];
 	
-	private static short[][] board = new short[10][20];
-	
-	public static short[][] GetBoard() {
+	public static byte[][] GetBoard() {
 		return board;
 	}
-	
 }
+
