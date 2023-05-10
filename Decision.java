@@ -1,10 +1,10 @@
 package tetrismode;
 
 public class Decision {
-	private static byte holeCost = -20;
-	private static byte bumpCost = -1;
+	private static byte holeCost = 20;
+	private static byte bumpCost = 1;
 	
-	public static int[] FindBestPlacement(byte[] pieces, byte[][] board) {
+	public static byte[] FindBestPlacement(byte[] pieces, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
@@ -22,40 +22,128 @@ public class Decision {
 		return null;
 	}
 	
-	private static byte[] TestCombinations(byte piece, byte[][] board, byte range) {
+	private static short[] TestCombinations(byte piece, byte[][] board, byte range) {
 		
 		byte[][] pieceData = new byte[4][2];
-		byte[] movement = new byte[2];
+		short[] movement = new short[3];
 		short lowestCost = 9999;
 		short currentCost = 0;
 		
 		if (piece == 0) { //O piece
-			for (byte i = 0; i < range-1; i++) {
-				pieceData[0][0] = i;
+			for (byte disp = -4; disp < range-5; disp++) {
+				pieceData[0][0] = (byte)(disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = i;
+				pieceData[1][0] = (byte)(disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(i+1);
+				pieceData[2][0] = (byte)(disp+5);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(i+1);
+				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
 				currentCost = CalculateCost(pieceData, board, range);
 				
 				if (currentCost < lowestCost) {
 					lowestCost = currentCost;
-					
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
 				}
 			}
 		}
 		else if (piece == 1) { //I piece
-			
+			for (byte disp = -3; disp < range-6; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+6);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -6; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+5);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+5);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 2;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 3;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 1;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		else if (piece == 2) { //S piece
-			
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 1;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = 0; disp < range-3; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp-1);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = disp;
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+1);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+2);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = (byte)(disp-3);
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		else if (piece == 3) { //Z piece
 			
@@ -70,20 +158,24 @@ public class Decision {
 			
 		}
 		
-		return null; //error return
+		return movement;
 	}
 	
-	private static short CalculateCost(byte[][] minoCoordinates, byte[][] board, byte range) {
+	private static short CalculateCost(byte[][] minoCoordinates, byte[][] originalBoard, byte range) {
 		
 		short cost = 0;
 		
+		byte board[][] = new byte[10][20];
+		
+		board = originalBoard; //could go wrong
+		
 		//Drop piece
 		boolean contact = false;
-		byte yPos = 17;
+		byte yPos = 16;
 		
 		while (!contact && yPos >= 0) {
 			
-			for (short mino = 0; mino < minoCoordinates.length; mino++) {
+			for (byte mino = 0; mino < minoCoordinates.length; mino++) {
 				
 				if (board[minoCoordinates[mino][0]][yPos+minoCoordinates[mino][1]] == 1) {
 					//we are immersed in floor
@@ -98,13 +190,13 @@ public class Decision {
 		yPos++;
 		
 		//Update board to contain dropped piece
-		for (short mino = 0; mino < minoCoordinates.length; mino++) {
+		for (byte mino = 0; mino < minoCoordinates.length; mino++) {
 			board[minoCoordinates[mino][0]][minoCoordinates[mino][1]+yPos] = 1;
 		}
 		
 		//Clear lines
-		int sum = 0;
-		int linesCleared = 0;
+		byte sum = 0;
+		byte linesCleared = 0;
 		
 		for (int y = 0; y < 20-linesCleared; y++) {
 			sum = 0;
@@ -127,11 +219,11 @@ public class Decision {
 		
 		//Calculate cost
 		//Hole costs
-		int holeCostDecay = holeCost;
+		byte holeCostDecay = holeCost;
 		
-		for (int mino = 0; mino < minoCoordinates.length; mino++) {
+		for (byte mino = 0; mino < minoCoordinates.length; mino++) {
 			
-			for (int y = minoCoordinates[mino][1]+yPos-1; y >= 0; y--) {
+			for (byte y = (byte)(minoCoordinates[mino][1]+yPos-1); y >= 0; y--) {
 				
 				if (board[minoCoordinates[mino][0]][y] == 0) {
 					cost += holeCostDecay;
