@@ -1,7 +1,7 @@
 package tetrismode;
 
 public class Decision {
-	private static byte holeCost = 20;
+	private static byte holeCost = 10;
 	private static byte bumpCost = 1;
 	
 	public static byte[] FindBestPlacement(byte[] pieces, byte[][] board) {
@@ -10,7 +10,10 @@ public class Decision {
 		byte mode = DecideMode(board);
 		
 		if (mode == 0 && pieces[0] == 0) { //tetris
-			
+			byte[] movement = new byte[2];
+			movement[0] = 4;
+			movement[1] = 1;
+			return movement;
 		}
 		else if (mode == 2) { //clean stack
 			
@@ -76,7 +79,7 @@ public class Decision {
 					movement[2] = currentCost;
 				}
 			}
-			for (byte disp = -6; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -5; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+5);
 				pieceData[0][1] = 0;
 				
@@ -372,7 +375,94 @@ public class Decision {
 			}
 		}
 		else if (piece == 6) { //T piece
-			
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 1;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 2;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 1;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 1;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 1;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 2;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-4; disp++) { //rotation 3  (ccw)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 1;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 2;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 3;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		
 		return movement;
@@ -493,31 +583,44 @@ public class Decision {
 		//1 means continue stacking 9-0
 		//2 means clean up stack
 		
-		byte sum = 0;
+		byte sum = 9;
 		
 		for (byte x = 0; x < board.length-1; x++) {
-			sum += board[x][3];
+			if (board[x][3] == 0) {
+				sum--;
+				if (board[x][4] == 1) { //hole found on 4th row
+					return 2;
+				}
+			}
 		}
 		
-		if (sum == 10) {
+		if (sum < 9) { //4th row is not filled yet
 			sum = 0;
-			
 			for (byte x = 0; x < board.length-1; x++) {
-				
 				for (byte y = 0; y < 3; y++) {
 					sum += board[x][y];
 				}
 			}
-			
-			if (sum == 30) { //no holes found
-				return 0;
+			if (sum == 27) { //no holes below 4th row, keep stacking
+				return 1;
 			}
-			else { //holes found
+			else { //at least one hole found
 				return 2;
 			}
 		}
 		else {
-			return 1;
+			sum = 0;
+			for (byte x = 0; x < board.length-1; x++) {
+				for (byte y = 0; y < 3; y++) {
+					sum += board[x][y];
+				}
+			}
+			if (sum == 27) { //no holes below 4th row, take tetris if available
+				return 0;
+			}
+			else { //at least one hole found
+				return 2;
+			}
 		}
 	}
 }
