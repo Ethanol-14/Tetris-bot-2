@@ -122,37 +122,254 @@ public class Decision {
 					movement[2] = currentCost;
 				}
 			}
-			for (byte disp = 0; disp < range-3; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp-1);
-				pieceData[0][1] = 0;
+			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = disp;
-				pieceData[1][1] = 0;
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+1);
-				pieceData[2][1] = 0;
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+2);
+				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
 				currentCost = CalculateCost(pieceData, board, range);
 				
 				if (currentCost < lowestCost) {
 					lowestCost = currentCost;
-					movement[0] = (byte)(disp-3);
-					movement[1] = 0;
+					movement[0] = disp;
+					movement[1] = 1;
 					movement[2] = currentCost;
 				}
 			}
 		}
 		else if (piece == 3) { //Z piece
-			
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 1;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 2;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 1;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		else if (piece == 4) { //L piece
-			
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 1;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 2;
+				
+				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+3);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 1;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 1;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 2;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 2;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 2;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 3;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		else if (piece == 5) { //J piece
-			
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 1;
+				
+				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 0;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 0;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+3);
+				pieceData[2][1] = 2;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 2;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 1;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 1;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 1;
+				
+				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][1] = 0;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 2;
+					movement[2] = currentCost;
+				}
+			}
+			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
+				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][1] = 0;
+				
+				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][1] = 0;
+				
+				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][1] = 1;
+				
+				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][1] = 2;
+				
+				currentCost = CalculateCost(pieceData, board, range);
+				
+				if (currentCost < lowestCost) {
+					lowestCost = currentCost;
+					movement[0] = disp;
+					movement[1] = 3;
+					movement[2] = currentCost;
+				}
+			}
 		}
 		else if (piece == 6) { //T piece
 			
