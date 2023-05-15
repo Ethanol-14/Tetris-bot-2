@@ -1,5 +1,3 @@
-package tetrismode;
-
 public class Decision {
 	private static byte holeCost = 10;
 	private static byte bumpCost = 1;
@@ -13,13 +11,15 @@ public class Decision {
 			byte[] movement = new byte[2];
 			movement[0] = 4;
 			movement[1] = 1;
+			System.out.println("wtf");
 			return movement;
 		}
 		else if (mode == 2) { //clean stack
+			System.out.println("cleaning stack :(");
 			
 		}
 		else { //stack 9-0
-			
+			System.out.println("Stacking 9-0 :D");
 		}
 		
 		return null;
@@ -474,7 +474,11 @@ public class Decision {
 		
 		byte board[][] = new byte[10][20];
 		
-		board = originalBoard; //could go wrong
+		for (byte x = 0; x < board.length; x++) {
+			for (byte y = 0; y < board[0].length; y++) {
+				board[x][y] = originalBoard[x][y];
+			}
+		}
 		
 		//Drop piece
 		boolean contact = false;
@@ -595,6 +599,7 @@ public class Decision {
 		}
 		
 		if (sum < 9) { //4th row is not filled yet
+			//this if statement needs different logic after sum < 9 is confirmed
 			sum = 0;
 			for (byte x = 0; x < board.length-1; x++) {
 				for (byte y = 0; y < 3; y++) {
