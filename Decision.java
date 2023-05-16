@@ -1,7 +1,7 @@
 public class Decision {
 	private static short holeCost = 100;
 	private static short bumpCost = 5;
-	private static short lowCost = 0;
+	private static short lowCost = 1;
 	private static short holeCostDecayRate = 2;
 	
 	public static short[] FindBestPlacement(byte piece, byte[][] board) {
@@ -9,10 +9,11 @@ public class Decision {
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
 		
-		if (mode == 0 && piece == 0) { //tetris
-			short[] movement = new short[2];
+		if (mode == 0 && piece == 1) { //tetris
+			short[] movement = new short[3];
 			movement[0] = 4;
 			movement[1] = 1;
+			movement[2] = 0;
 			System.out.println("TETRIS WOOO :D");
 			return movement;
 		}
@@ -477,8 +478,8 @@ public class Decision {
 		
 		byte board[][] = new byte[10][25];
 		
-		for (byte x = 0; x < board.length; x++) {
-			for (byte y = 0; y < board[0].length; y++) {
+		for (byte x = 0; x < originalBoard.length; x++) {
+			for (byte y = 0; y < originalBoard[0].length; y++) {
 				board[x][y] = originalBoard[x][y];
 			}
 		}

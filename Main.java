@@ -9,7 +9,7 @@ public class Main {
 	private static int[] gamePos = {700, 400};
 	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
 	private static int[] boardDimensions = {10, 20};
-	private static int delay = 2000;
+	private static int delay = 500;
 	private static int movementDelay = 10;
 	
 	public static void main (String[] args) {
@@ -18,7 +18,7 @@ public class Main {
 		//Board.RandomizeFloor(0);
 		//TestT(5);
 		
-		configureForJstris();
+		configureForJstrisOnSchoolComputer();
 		Board.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
 
 		Screen.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
@@ -61,6 +61,24 @@ public class Main {
 		piecePos[0] = 1018;
 		piecePos[1] = 217;
 		gamePos[0] = 1000;
+		gamePos[1] = 400;
+		pieceColors[0] = 159;
+		pieceColors[1] = 155;
+		pieceColors[2] = 177;
+		pieceColors[3] = 15;
+		pieceColors[4] = 91;
+		pieceColors[5] = 65;
+		pieceColors[6] = 41;
+	}
+	
+	private static void configureForJstrisOnSchoolComputer() {
+		topLeft[0] = 602;
+		topLeft[1] = 184;
+		slope[0] = 24;
+		slope[1] = 24;
+		piecePos[0] = 697;
+		piecePos[1] = 185;
+		gamePos[0] = 800;
 		gamePos[1] = 400;
 		pieceColors[0] = 159;
 		pieceColors[1] = 155;
