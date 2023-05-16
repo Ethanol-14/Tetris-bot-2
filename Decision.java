@@ -1,6 +1,8 @@
 public class Decision {
-	private static byte holeCost = 100;
-	private static byte bumpCost = 1;
+	private static short holeCost = 100;
+	private static short bumpCost = 5;
+	private static short lowCost = 0;
+	private static short holeCostDecayRate = 2;
 	
 	public static short[] FindBestPlacement(byte piece, byte[][] board) {
 		
@@ -473,7 +475,7 @@ public class Decision {
 		
 		short cost = 0;
 		
-		byte board[][] = new byte[10][20];
+		byte board[][] = new byte[10][25];
 		
 		for (byte x = 0; x < board.length; x++) {
 			for (byte y = 0; y < board[0].length; y++) {
@@ -483,7 +485,9 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		byte yPos = 15;
+		byte yPos = 20;
+		
+		cost += lowCost*20;
 		
 		while (!contact && yPos >= 0) {
 			
@@ -498,6 +502,7 @@ public class Decision {
 			}
 			
 			yPos--;
+			cost -= lowCost;
 		}
 		yPos++;
 		
@@ -514,37 +519,40 @@ public class Decision {
 			sum = 0;
 			
 			for (int x = 0; x < 10; x++) {
-				board[x][y] = board[x][y+linesCleared];
-			}
-			
-			for (int x = 0; x < 10; x++) {
 				sum += board[x][y];
 			}
 			
 			if (sum == 10) {
 				linesCleared += 1;
 			}
-			if (sum == 0) {
+			else if (sum == 0) {
 				break;
+			}
+			
+			for (int x = 0; x < 10; x++) {
+				board[x][y] = board[x][y+linesCleared];
 			}
 		}
 		
 		//Calculate costs
 		
 		//Hole costs
-		byte holeCostDecay = holeCost;
+		short decayedHoleCost = holeCost;
+		boolean holeFound = false;
 		
 		//int tempholecount = 0;
 		
-		for (byte mino = 0; mino < minoCoordinates.length; mino++) {
-			
-			for (byte y = (byte)(minoCoordinates[mino][1]+yPos-1); y >= 0; y--) {
-				
-				if (board[minoCoordinates[mino][0]][y] == 0) {
-					cost += holeCostDecay;
-					//tempholecount++;
+		for (int y = 18; y >= 0; y--) {
+			for (int x = 0; x < range; x++) {
+				if (board[x][y+1] == 1 && board[x][y] == 0) {
+					holeFound = true;
+					cost += decayedHoleCost;
 				}
-				holeCostDecay /= 2;
+			}
+			
+			if (holeFound) {
+				decayedHoleCost /= holeCostDecayRate;
+				holeFound = false;
 			}
 		}
 		
