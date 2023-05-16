@@ -5,14 +5,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import java.util.Random;
 
 public class Screen {
 	
 	private static Robot computer;
 
 	private static int boardWidth = 10;
-	private static int boardHeight = 20;
+	private static int boardHeight = 25;
 	
 	private static int inBetweenDelay = 5;
 	
@@ -120,7 +119,7 @@ public class Screen {
 		BufferedImage screenshot = computer.createScreenCapture(searchArea);
 		
 		for (int x = 0; x < boardWidth; x++) {
-			for (int y = 1; y < boardHeight; y++) {
+			for (int y = 1; y < 20; y++) {
 				if (screenshot.getRGB(x*slope[1], y*slope[0]) == -16777216) {
 					board[x][boardHeight-y-1] = 0;
 				}

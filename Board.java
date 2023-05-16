@@ -11,7 +11,7 @@ public class Board extends JPanel { //this class is really just for basic board 
 	private static JFrame frame = new JFrame("Block solution");
 	private static JPanel panel = new Board();
 	
-	private static byte[][] board = new byte[10][20];
+	private static byte[][] board = new byte[10][25];
 	
 	public static byte[][] GetBoard() {
 		return board;
