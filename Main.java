@@ -1,15 +1,18 @@
-
 public class Main {
 	public static void main (String[] args) {
 		System.out.println("test");
+
+		Board.Init();
+		Board.RandomizeFloor(5);
+		TestT(6);
 		
-		TestT(5);
+		
 	}
 	
 	private static void TestT(int y) {
 		byte[] queue = new byte[1];
 		queue[0] = 6;
-		byte[] finals = Decision.FindBestPlacement(queue, Board.GetBoard());
+		short[] finals = Decision.FindBestPlacement(queue, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);

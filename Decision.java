@@ -1,28 +1,29 @@
 public class Decision {
-	private static byte holeCost = 10;
+	private static byte holeCost = 20;
 	private static byte bumpCost = 1;
 	
-	public static byte[] FindBestPlacement(byte[] pieces, byte[][] board) {
+	public static short[] FindBestPlacement(byte[] pieces, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
 		
 		if (mode == 0 && pieces[0] == 0) { //tetris
-			byte[] movement = new byte[2];
+			short[] movement = new short[2];
 			movement[0] = 4;
 			movement[1] = 1;
-			System.out.println("wtf");
+			System.out.println("TETRIS WOOO");
 			return movement;
 		}
 		else if (mode == 2) { //clean stack
 			System.out.println("cleaning stack :(");
-			
+			short[] movement = TestCombinations(pieces[0], board, (byte)10);
+			return movement;
 		}
 		else { //stack 9-0
 			System.out.println("Stacking 9-0 :D");
+			short[] movement = TestCombinations(pieces[0], board, (byte)9);
+			return movement;
 		}
-		
-		return null;
 	}
 	
 	private static short[] TestCombinations(byte piece, byte[][] board, byte range) {
@@ -441,7 +442,7 @@ public class Decision {
 					movement[2] = currentCost;
 				}
 			}
-			for (byte disp = -3; disp < range-4; disp++) { //rotation 3  (ccw)
+			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 1;
 				
@@ -528,7 +529,8 @@ public class Decision {
 			}
 		}
 		
-		//Calculate cost
+		//Calculate costs
+		
 		//Hole costs
 		byte holeCostDecay = holeCost;
 		
@@ -564,7 +566,7 @@ public class Decision {
 					}
 				}
 			}
-			else if (board[x][yLevel-1] == 0) { //we need to search down
+			else if (yLevel != 0 && board[x][yLevel-1] == 0) { //we need to search down
 				while (board[x][yLevel] == 0) {
 					yLevel--;
 					cost += bumpCost;
@@ -600,18 +602,8 @@ public class Decision {
 		
 		if (sum < 9) { //4th row is not filled yet
 			//this if statement needs different logic after sum < 9 is confirmed
-			sum = 0;
-			for (byte x = 0; x < board.length-1; x++) {
-				for (byte y = 0; y < 3; y++) {
-					sum += board[x][y];
-				}
-			}
-			if (sum == 27) { //no holes below 4th row, keep stacking
-				return 1;
-			}
-			else { //at least one hole found
-				return 2;
-			}
+			//idk keep stacking lol
+			return 1;
 		}
 		else {
 			sum = 0;

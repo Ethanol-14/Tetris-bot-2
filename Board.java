@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 
 import java.util.Random;
 
-public class Board extends JPanel {
+public class Board extends JPanel { //this class is really just for basic board visualization
 	private static JFrame frame = new JFrame("Block solution");
 	private static JPanel panel = new Board();
 	
@@ -21,11 +21,11 @@ public class Board extends JPanel {
 		board[x][y] = (byte)(value);
 	}
 	
-	public static void setBoardDimensions(int width, int height) {
+	public static void SetBoardDimensions(int width, int height) {
 		board = new byte[width][height];
 	}
 	
-	public static void init() {		
+	public static void Init() {		
 		panel.setBackground(Color.black);
 		frame.setSize(400, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
