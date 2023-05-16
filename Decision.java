@@ -1,27 +1,27 @@
 public class Decision {
-	private static byte holeCost = 20;
+	private static byte holeCost = 100;
 	private static byte bumpCost = 1;
 	
-	public static short[] FindBestPlacement(byte[] pieces, byte[][] board) {
+	public static short[] FindBestPlacement(byte piece, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
 		
-		if (mode == 0 && pieces[0] == 0) { //tetris
+		if (mode == 0 && piece == 0) { //tetris
 			short[] movement = new short[2];
 			movement[0] = 4;
 			movement[1] = 1;
-			System.out.println("TETRIS WOOO");
+			System.out.println("TETRIS WOOO :D");
 			return movement;
 		}
 		else if (mode == 2) { //clean stack
 			System.out.println("cleaning stack :(");
-			short[] movement = TestCombinations(pieces[0], board, (byte)10);
+			short[] movement = TestCombinations(piece, board, (byte)10);
 			return movement;
 		}
 		else { //stack 9-0
-			System.out.println("Stacking 9-0 :D");
-			short[] movement = TestCombinations(pieces[0], board, (byte)9);
+			System.out.println("Stacking 9-0 :)");
+			short[] movement = TestCombinations(piece, board, (byte)9);
 			return movement;
 		}
 	}
@@ -219,16 +219,16 @@ public class Decision {
 				}
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte)(disp+4);
 				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][0] = (byte)(disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+3);
+				pieceData[2][0] = (byte)(disp+4);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
 				currentCost = CalculateCost(pieceData, board, range);
@@ -309,16 +309,16 @@ public class Decision {
 				}
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte)(disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][0] = (byte)(disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+3);
+				pieceData[2][0] = (byte)(disp+4);
 				pieceData[2][1] = 2;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 2;
 				
 				currentCost = CalculateCost(pieceData, board, range);
@@ -483,7 +483,7 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		byte yPos = 16;
+		byte yPos = 15;
 		
 		while (!contact && yPos >= 0) {
 			
@@ -534,25 +534,32 @@ public class Decision {
 		//Hole costs
 		byte holeCostDecay = holeCost;
 		
+		//int tempholecount = 0;
+		
 		for (byte mino = 0; mino < minoCoordinates.length; mino++) {
 			
 			for (byte y = (byte)(minoCoordinates[mino][1]+yPos-1); y >= 0; y--) {
 				
 				if (board[minoCoordinates[mino][0]][y] == 0) {
 					cost += holeCostDecay;
+					//tempholecount++;
 				}
 				holeCostDecay /= 2;
 			}
 		}
 		
+		//System.out.println("Hole count: "+tempholecount);
+		
 		//Board flatness (or rather, bumpiness)
 		byte yLevel = 0;
-		for (byte y = 19; y > 0; y--) { //get to the highest block in the first column (the column at x = 0)
+		for (byte y = 19; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (board[0][y] == 1) {
 				yLevel = (byte)(y+1);
 				break;
 			}
 		}
+		
+		//int tempbumpcount=0;
 		
 		for (byte x = 1; x < range; x++) {
 			
@@ -561,24 +568,28 @@ public class Decision {
 					yLevel++;
 					cost += bumpCost;
 					
+					//tempbumpcount++;
+					
 					if (yLevel >= 17) { //too high
 						break;
 					}
 				}
 			}
-			else if (yLevel != 0 && board[x][yLevel-1] == 0) { //we need to search down
-				while (board[x][yLevel] == 0) {
+			else if (yLevel > 0 && board[x][yLevel-1] == 0) { //we need to search down
+				while (board[x][yLevel-1] == 0) {
 					yLevel--;
 					cost += bumpCost;
 					
-					if (yLevel < 0) { //bottom of board
+					//tempbumpcount++;
+					
+					if (yLevel < 1) { //bottom of board
 						break;
 					}
 				}
-				yLevel++;
-				cost -= bumpCost;
 			}
 		}
+		
+		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		
 		return cost;
 	}
@@ -589,35 +600,25 @@ public class Decision {
 		//1 means continue stacking 9-0
 		//2 means clean up stack
 		
-		byte sum = 9;
-		
-		for (byte x = 0; x < board.length-1; x++) {
-			if (board[x][3] == 0) {
-				sum--;
-				if (board[x][4] == 1) { //hole found on 4th row
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < 15; y++) {
+				if (board[x][y] == 0 && board[x][y+1] == 1) { //hole found
 					return 2;
 				}
 			}
 		}
 		
-		if (sum < 9) { //4th row is not filled yet
-			//this if statement needs different logic after sum < 9 is confirmed
-			//idk keep stacking lol
-			return 1;
+		byte sum = 0;
+		
+		for (int x = 0; x < board.length-1; x++) {
+			sum += board[x][3];
 		}
-		else {
-			sum = 0;
-			for (byte x = 0; x < board.length-1; x++) {
-				for (byte y = 0; y < 3; y++) {
-					sum += board[x][y];
-				}
-			}
-			if (sum == 27) { //no holes below 4th row, take tetris if available
-				return 0;
-			}
-			else { //at least one hole found
-				return 2;
-			}
+		
+		if (sum == board.length-1) { //4th row is filled too
+			return 0;
+		}
+		else { //the stack has not reached 4 blocks height yet
+			return 1;
 		}
 	}
 }

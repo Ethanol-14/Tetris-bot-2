@@ -51,11 +51,11 @@ public class Board extends JPanel { //this class is really just for basic board 
 		}
 	}
 	
-	public static void setboard(byte[][] _board) {
+	public static void Setboard(byte[][] _board) {
 		board = _board;
 	}
 	
-	public static void refresh() {
+	public static void Refresh() {
 		frame.repaint();
 	}
 	
