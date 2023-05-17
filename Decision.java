@@ -6,7 +6,7 @@ public class Decision {
 	private static short lineClearReward = 0;
 	private static short tetrisFinalCost = 25;
 	
-	public static short[][] FindBestPlacement(byte piece, byte[][] board) {
+	public static short[][] GiveRatings(byte piece, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
