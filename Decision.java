@@ -1,42 +1,47 @@
 public class Decision {
-	private static short holeCost = 100;
+	private static short holeCost = 50;
 	private static short bumpCost = 5;
-	private static short lowCost = 1;
+	private static short lowCost = 2;
 	private static short holeCostDecayRate = 2;
+	private static short lineClearReward = 0;
+	private static short tetrisFinalCost = 25;
 	
-	public static short[] FindBestPlacement(byte piece, byte[][] board) {
+	public static short[][] FindBestPlacement(byte piece, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
 		
 		if (mode == 0 && piece == 1) { //tetris
-			short[] movement = new short[3];
-			movement[0] = 4;
-			movement[1] = 1;
-			movement[2] = 0;
+			short[][] movement = new short[1][3];
+			movement[0][0] = 4;
+			movement[0][1] = 1;
+			movement[0][2] = tetrisFinalCost;
 			System.out.println("TETRIS WOOO :D");
 			return movement;
 		}
 		else if (mode == 2) { //clean stack
 			System.out.println("cleaning stack :(");
-			short[] movement = TestCombinations(piece, board, (byte)10);
+			short[][] movement = TestCombinations(piece, board, (byte)10);
 			return movement;
 		}
 		else { //stack 9-0
 			System.out.println("Stacking 9-0 :)");
-			short[] movement = TestCombinations(piece, board, (byte)9);
+			short[][] movement = TestCombinations(piece, board, (byte)9);
 			return movement;
 		}
 	}
 	
-	private static short[] TestCombinations(byte piece, byte[][] board, byte range) {
+	private static short[][] TestCombinations(byte piece, byte[][] board, byte range) {
 		
 		byte[][] pieceData = new byte[4][2];
-		short[] movement = new short[3];
-		short lowestCost = 9999;
-		short currentCost = 0;
+		int i = 0;
+		
+		short[][] feedback = new short[0][0];
 		
 		if (piece == 0) { //O piece
+
+			feedback = new short[range-1][3];
+			
 			for (byte disp = -4; disp < range-5; disp++) {
 				pieceData[0][0] = (byte)(disp+4);
 				pieceData[0][1] = 0;
@@ -50,17 +55,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 1) { //I piece
+
+			feedback = new short[(2*range)-3][3];
+			
 			for (byte disp = -3; disp < range-6; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 0;
@@ -74,14 +79,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+6);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -5; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+5);
@@ -96,17 +98,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 3;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 2) { //S piece
+
+			feedback = new short[(2*range)-3][3];
+			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 0;
@@ -120,14 +122,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+4);
@@ -142,17 +141,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 3) { //Z piece
+
+			feedback = new short[(2*range)-3][3];
+			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 1;
@@ -166,14 +165,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+4);
@@ -188,17 +184,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 2;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 4) { //L piece
+
+			feedback = new short[(4*range)-6][3];
+			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 0;
@@ -212,14 +208,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+4);
@@ -234,14 +227,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = (byte)(disp+3);
@@ -256,14 +246,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 2;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 2;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = (byte)(disp+3);
@@ -278,17 +265,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+4);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 3;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 3;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 5) { //J piece
+
+			feedback = new short[(4*range)-6][3];
+			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 1;
@@ -302,14 +289,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+4);
@@ -324,14 +308,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 2;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = (byte)(disp+3);
@@ -346,14 +327,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 2;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 2;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = (byte)(disp+3);
@@ -368,17 +346,17 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+4);
 				pieceData[3][1] = 2;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 3;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 3;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		else if (piece == 6) { //T piece
+
+			feedback = new short[(4*range)-6][3];
+			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
 				pieceData[0][0] = (byte)(disp+3);
 				pieceData[0][1] = 0;
@@ -392,14 +370,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+4);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 0;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 0;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = (byte)(disp+4);
@@ -414,14 +389,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+5);
 				pieceData[3][1] = 1;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 1;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 1;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = (byte)(disp+3);
@@ -436,14 +408,11 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+4);
 				pieceData[3][1] = 0;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 2;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 2;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = (byte)(disp+3);
@@ -458,18 +427,15 @@ public class Decision {
 				pieceData[3][0] = (byte)(disp+4);
 				pieceData[3][1] = 2;
 				
-				currentCost = CalculateCost(pieceData, board, range);
+				feedback[i][0] = disp;
+				feedback[i][1] = 3;
+				feedback[i][2] = CalculateCost(pieceData, board, range);
 				
-				if (currentCost < lowestCost) {
-					lowestCost = currentCost;
-					movement[0] = disp;
-					movement[1] = 3;
-					movement[2] = currentCost;
-				}
+				i++;
 			}
 		}
 		
-		return movement;
+		return feedback;
 	}
 	
 	private static short CalculateCost(byte[][] minoCoordinates, byte[][] originalBoard, byte range) {
@@ -524,7 +490,7 @@ public class Decision {
 			}
 			
 			if (sum == 10) {
-				linesCleared += 1;
+				linesCleared++;
 			}
 			else if (sum == 0) {
 				break;
@@ -534,6 +500,8 @@ public class Decision {
 				board[x][y] = board[x][y+linesCleared];
 			}
 		}
+		
+		cost -= linesCleared*lineClearReward;
 		
 		//Calculate costs
 		

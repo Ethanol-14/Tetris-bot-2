@@ -9,8 +9,8 @@ public class Main {
 	private static int[] gamePos = {700, 400};
 	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
 	private static int[] boardDimensions = {10, 20};
-	private static int delay = 500;
-	private static int movementDelay = 10;
+	private static int delay = 1000;
+	private static int movementDelay = 5;
 	
 	public static void main (String[] args) {
 		//System.out.println("test");
@@ -18,7 +18,7 @@ public class Main {
 		//Board.RandomizeFloor(0);
 		//TestT(5);
 		
-		configureForJstrisOnSchoolComputer();
+		configureForJstris();
 		Board.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
 
 		Screen.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
@@ -35,7 +35,7 @@ public class Main {
 			Delay(delay);
 			
 			if (queue[0] == -1) {
-				Screen.FailSafe(20);
+				Screen.FailSafe();
 				System.out.println("Emergency hold");
 				failCount++;
 				if (failCount >= 5) {
@@ -44,7 +44,7 @@ public class Main {
 				}
 			}
 			else {
-				movement = Decision.FindBestPlacement(queue[0], Board.GetBoard());
+				movement = Decision.GiveRatings(queue[0], Board.GetBoard());
 
 				Screen.OutputMovement(movement, movementDelay, false);
 			}

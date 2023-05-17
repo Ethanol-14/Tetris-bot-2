@@ -37,7 +37,7 @@ public class Screen {
 		computer.mouseMove(0, 0);
 	}
 	
-	public static void FailSafe(int delayMsec) {
+	public static void FailSafe() {
 		computer.keyPress(KeyEvent.VK_SHIFT);
 		Delay(inBetweenDelay);
 		computer.keyRelease(KeyEvent.VK_SHIFT);
