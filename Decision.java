@@ -6,6 +6,12 @@ public class Decision {
 	private static short lineClearReward = 0;
 	private static short tetrisFinalCost = 25;
 	
+	public static int[] FindBestPlacement(int[] queue, byte[][] board) {
+		
+		
+		return null;
+	}
+	
 	public static short[][] GiveRatings(byte piece, byte[][] board) {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
@@ -39,7 +45,7 @@ public class Decision {
 		short[][] feedback = new short[0][0];
 		
 		if (piece == 0) { //O piece
-
+			
 			feedback = new short[range-1][3];
 			
 			for (byte disp = -4; disp < range-5; disp++) {
