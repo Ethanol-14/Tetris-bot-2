@@ -1,10 +1,10 @@
 public class Decision {
-	private static short holeCost = 50;
-	private static short bumpCost = 5;
-	private static short lowCost = 2;
-	private static short holeCostDecayRate = 3;
-	private static short lineClearReward = 20;
-	private static short tetrisFinalCost = 10;
+	private static short holeCost = 21;
+	private static short bumpCost = 2;
+	private static short lowCost = 4;
+	private static short holeCostDecayRate = 2;
+	private static short lineClearReward = 10;
+	private static short tetrisFinalCost = 0;
 	
 	public static int[] FindBestPlacement(int[] queue, byte[][] board) {
 		int lowestCost = 9999;
@@ -506,24 +506,33 @@ public class Decision {
 		
 		//Clear lines
 		byte sum = 0;
+		byte rank = 0;
 		byte linesCleared = 0;
 		
-		for (int y = 0; y < 20-linesCleared; y++) {
+		for (int y = 0; y < 18; y++) {
 			sum = 0;
 			
 			for (int x = 0; x < 10; x++) {
 				sum += board[x][y];
 			}
 			
-			if (sum == 10) {
-				linesCleared++;
-			}
-			else if (sum == 0) {
+			if (sum == 0) {
+
+				for (int y2 = rank; y < 18; y++) {
+					for (int x = 0; x < 10; x++) {
+						board[x][y2] = 0;
+					}
+				}
 				break;
 			}
-			
-			for (int x = 0; x < 10; x++) {
-				board[x][y] = board[x][y+linesCleared];
+			else if (sum != 10) {
+				for (int x = 0; x < 10; x++) {
+					board[x][rank] = board[x][y];
+				}
+				rank++;
+			}
+			else {
+				linesCleared++;
 			}
 		}
 		

@@ -2,8 +2,8 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int delay = 1000;
-	private static int movementDelay = 5;
+	private static int delay = 700;
+	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
 	private static int[] topLeft = {604, 217};
