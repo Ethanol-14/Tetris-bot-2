@@ -2,12 +2,32 @@ public class Decision {
 	private static short holeCost = 50;
 	private static short bumpCost = 5;
 	private static short lowCost = 2;
-	private static short holeCostDecayRate = 2;
-	private static short lineClearReward = 0;
-	private static short tetrisFinalCost = 25;
+	private static short holeCostDecayRate = 3;
+	private static short lineClearReward = 20;
+	private static short tetrisFinalCost = 10;
 	
 	public static int[] FindBestPlacement(int[] queue, byte[][] board) {
+		int lowestCost = 9999;
 		
+		if (queue.length == 1) {
+			int[] movement = new int[2];
+			
+			short[][] results = GiveRatings((byte) queue[0], board);
+			
+			for (int i = 0; i < results.length; i++) {
+				if (results[i][2] < lowestCost) {
+					movement[0] = results[i][0];
+					movement[1] = results[i][1];
+					
+					lowestCost = results[i][2];
+				}
+			}
+			
+			return movement;
+		}
+		else {
+			
+		}
 		
 		return null;
 	}
@@ -18,26 +38,26 @@ public class Decision {
 		byte mode = DecideMode(board);
 		
 		if (mode == 0 && piece == 1) { //tetris
-			short[][] movement = new short[1][3];
-			movement[0][0] = 4;
-			movement[0][1] = 1;
-			movement[0][2] = tetrisFinalCost;
+			short[][] results = new short[1][3];
+			results[0][0] = 4;
+			results[0][1] = 1;
+			results[0][2] = tetrisFinalCost;
 			System.out.println("TETRIS WOOO :D");
-			return movement;
+			return results;
 		}
 		else if (mode == 2) { //clean stack
 			System.out.println("cleaning stack :(");
-			short[][] movement = TestCombinations(piece, board, (byte)10);
-			return movement;
+			short[][] results = TestCombinations(piece, board, (byte) 10);
+			return results;
 		}
 		else { //stack 9-0
 			System.out.println("Stacking 9-0 :)");
-			short[][] movement = TestCombinations(piece, board, (byte)9);
-			return movement;
+			short[][] results = TestCombinations(piece, board, (byte) 9);
+			return results;
 		}
 	}
 	
-	private static short[][] TestCombinations(byte piece, byte[][] board, byte range) {
+	private static short[][] TestCombinations(byte piece, byte[][] board, byte range) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		byte[][] pieceData = new byte[4][2];
 		int i = 0;
@@ -49,16 +69,16 @@ public class Decision {
 			feedback = new short[range-1][3];
 			
 			for (byte disp = -4; disp < range-5; disp++) {
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -73,16 +93,16 @@ public class Decision {
 			feedback = new short[(2*range)-3][3];
 			
 			for (byte disp = -3; disp < range-6; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+6);
+				pieceData[3][0] = (byte) (disp+6);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -92,16 +112,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -5; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+5);
+				pieceData[0][0] = (byte) (disp+5);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+5);
+				pieceData[1][0] = (byte) (disp+5);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 2;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 3;
 				
 				feedback[i][0] = disp;
@@ -116,16 +136,16 @@ public class Decision {
 			feedback = new short[(2*range)-3][3];
 			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -135,16 +155,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -159,16 +179,16 @@ public class Decision {
 			feedback = new short[(2*range)-3][3];
 			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -178,16 +198,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 2;
 				
 				feedback[i][0] = disp;
@@ -202,16 +222,16 @@ public class Decision {
 			feedback = new short[(4*range)-6][3];
 			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -221,16 +241,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -240,16 +260,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][0] = (byte) (disp+3);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -259,16 +279,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 2;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte) (disp+4);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -283,16 +303,16 @@ public class Decision {
 			feedback = new short[(4*range)-6][3];
 			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = (byte)(disp+3);
+				pieceData[1][0] = (byte) (disp+3);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -302,16 +322,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 2;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 2;
 				
 				feedback[i][0] = disp;
@@ -321,16 +341,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -340,16 +360,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte) (disp+4);
 				pieceData[3][1] = 2;
 				
 				feedback[i][0] = disp;
@@ -364,16 +384,16 @@ public class Decision {
 			feedback = new short[(4*range)-6][3];
 			
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 0;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte) (disp+4);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -383,16 +403,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = (byte)(disp+4);
+				pieceData[0][0] = (byte) (disp+4);
 				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 2;
 				
-				pieceData[3][0] = (byte)(disp+5);
+				pieceData[3][0] = (byte) (disp+5);
 				pieceData[3][1] = 1;
 				
 				feedback[i][0] = disp;
@@ -402,16 +422,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 1;
 				
-				pieceData[2][0] = (byte)(disp+5);
+				pieceData[2][0] = (byte) (disp+5);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte) (disp+4);
 				pieceData[3][1] = 0;
 				
 				feedback[i][0] = disp;
@@ -421,16 +441,16 @@ public class Decision {
 				i++;
 			}
 			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = (byte)(disp+3);
+				pieceData[0][0] = (byte) (disp+3);
 				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = (byte)(disp+4);
+				pieceData[1][0] = (byte) (disp+4);
 				pieceData[1][1] = 0;
 				
-				pieceData[2][0] = (byte)(disp+4);
+				pieceData[2][0] = (byte) (disp+4);
 				pieceData[2][1] = 1;
 				
-				pieceData[3][0] = (byte)(disp+4);
+				pieceData[3][0] = (byte) (disp+4);
 				pieceData[3][1] = 2;
 				
 				feedback[i][0] = disp;
@@ -537,7 +557,7 @@ public class Decision {
 		byte yLevel = 0;
 		for (byte y = 19; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (board[0][y] == 1) {
-				yLevel = (byte)(y+1);
+				yLevel = (byte) (y+1);
 				break;
 			}
 		}
