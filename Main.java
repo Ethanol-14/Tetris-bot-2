@@ -13,20 +13,26 @@ public class Main {
 	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
 	
 	public static void main (String[] args) {
-		//System.out.println("test");
-		//Board.Init();
-		
 		configureForJstris();
 		Board.SetBoardDimensions(10, 25);
-		/*for (int x = 1; x < 10; x++) {
+		
+		/*System.out.println("test");
+		Board.Init();
+		
+		for (int x = 0; x < 9; x++) {
 			for (int y = 0; y < 4; y++) {
 				Board.EditBoard(x, y, 1);
 			}
-		}*/
-		//TestI(6);
-		//Board.Refresh();
+		}
+		for (int x = 0; x < 0; x++) {
+			for (int y = 0; y < 4; y++) {
+				Board.EditBoard(x, y, 1);
+			}
+		}
+		TestI(6);
+		Board.Refresh();
 		
-		//Delay(10000000);
+		Delay(10000000);*/
 		
 		/*boolean lmao = true;
 		while (lmao) {

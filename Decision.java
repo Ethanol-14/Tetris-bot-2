@@ -1,9 +1,9 @@
 public class Decision {
-	private static short holeCost = 40;
-	private static short bumpCost = 2;
-	private static short bumpHeightIncreaser = 2;
-	private static short lowCost = 8;
+	private static short holeCost = 41;
 	private static short holeCostDecayRate = 2;
+	private static short bumpCost = 2;
+	private static short lowCost = 4;
+	private static short wellCost = 3;
 	private static short lineClearReward = 10;
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
@@ -517,24 +517,24 @@ public class Decision {
 		byte rank = 0;
 		byte linesCleared = 0;
 		
-		for (int y = 0; y < 18; y++) {
+		for (byte y = 0; y < 18; y++) {
 			sum = 0;
 			
-			for (int x = 0; x < 10; x++) {
+			for (byte x = 0; x < 10; x++) {
 				sum += board[x][y];
 			}
 			
 			if (sum == 0) {
 
-				for (int y2 = rank; y2 < 18; y2++) {
-					for (int x = 0; x < 10; x++) {
+				for (byte y2 = rank; y2 < 18; y2++) {
+					for (byte x = 0; x < 10; x++) {
 						board[x][y2] = 0;
 					}
 				}
 				break;
 			}
 			else if (sum != 10) {
-				for (int x = 0; x < 10; x++) {
+				for (byte x = 0; x < 10; x++) {
 					board[x][rank] = board[x][y];
 				}
 				rank++;
@@ -554,8 +554,8 @@ public class Decision {
 		
 		//int tempholecount = 0;
 		
-		for (int y = 18; y >= 0; y--) {
-			for (int x = 0; x < range; x++) {
+		for (byte y = 17; y >= 0; y--) {
+			for (byte x = 0; x < range; x++) {
 				if (board[x][y+1] == 1 && board[x][y] == 0) {
 					holeFound = true;
 					cost += decayedHoleCost;
@@ -572,7 +572,7 @@ public class Decision {
 		
 		//Board flatness (or rather, bumpiness)
 		byte yLevel = 0;
-		for (byte y = 19; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
+		for (byte y = 17; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (board[0][y] == 1) {
 				yLevel = (byte) (y+1);
 				break;
@@ -580,16 +580,13 @@ public class Decision {
 		}
 		
 		//int tempbumpcount=0;
-		short increasedBumpCost = 0;
 		
 		for (byte x = 1; x < range; x++) {
-			increasedBumpCost = 0;
 			
 			if (board[x][yLevel] == 1) { //we need to search up
 				while (board[x][yLevel] == 1) {
 					yLevel++;
-					cost += bumpCost + increasedBumpCost;
-					increasedBumpCost += bumpHeightIncreaser;
+					cost += bumpCost ;
 					
 					//tempbumpcount++;
 					
@@ -601,8 +598,7 @@ public class Decision {
 			else if (yLevel > 0 && board[x][yLevel-1] == 0) { //we need to search down
 				while (board[x][yLevel-1] == 0) {
 					yLevel--;
-					cost += bumpCost + increasedBumpCost;
-					increasedBumpCost += bumpHeightIncreaser;
+					cost += bumpCost;
 					
 					//tempbumpcount++;
 					
@@ -613,13 +609,71 @@ public class Decision {
 			}
 		}
 		
+		//High wells
+		//At x = 0
+		for (byte y = 17; y >= 0; y--) {
+			if (board[0][y] == 0) {
+				if (board[1][y] == 1) {
+					while (y >= 0 && board[0][y] == 0) {
+						y--;
+						cost += wellCost;
+					}
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		//At x = range
+		for (byte y = 17; y >= 0; y--) {
+			if (board[range-1][y] == 0) {
+				if (board[range-2][y] == 1) {
+					while (y >= 0 && board[range-1][y] == 0) {
+						y--;
+						cost += wellCost;
+					}
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		//And all the x in between
+		for (byte x = 1; x < range-1; x++) {
+			for (byte y = 17; y >= 0; y--) {
+				if (board[x][y] == 0) {
+					if (board[x-1][y] + board[x+1][y] == 2) {
+						while (y >= 0 && board[x][y] == 0) {
+							y--;
+							cost += wellCost;
+						}
+						break;
+					}
+				}
+				else {
+					break;
+				}
+			}
+		}
+		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+cost);
 		Board.Setboard(board);
 		Board.Refresh();
-		Delay(500);*/
+		Delay(1000);*/
 		
 		return cost;
+	}
+	
+	private static void Delay(int msec) {
+		try {
+		    Thread.sleep(msec);
+		}
+		catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
+		}
 	}
 	
 	private static byte DecideMode(byte[][] board) {
@@ -647,15 +701,6 @@ public class Decision {
 		}
 		else { //the stack has not reached 4 blocks height yet
 			return 1;
-		}
-	}
-	
-	private static void Delay(int msec) {
-		try {
-		    Thread.sleep(msec);
-		}
-		catch(InterruptedException ex) {
-		    Thread.currentThread().interrupt();
 		}
 	}
 }
