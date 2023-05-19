@@ -11,7 +11,7 @@ Just wait till it gets previews :)
 Anyways here's some good ol reliable values that worked well for korea stacking
 private static short holeCost = 41;
 private static short holeCostDecayRate = 2;
-private static short bumpCost = 2;
+private static short bumpCost = 1;
 private static short lowCost = 4;
 private static short wellCost = 3;
-private static short lineClearReward = 10;
+private static short lineClearReward = 8;
