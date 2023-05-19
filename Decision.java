@@ -1,10 +1,10 @@
 public class Decision {
 	private static short holeCost = 41;
 	private static short holeCostDecayRate = 2;
-	private static short bumpCost = 2;
+	private static short bumpCost = 1;
 	private static short lowCost = 4;
 	private static short wellCost = 3;
-	private static short lineClearReward = 10;
+	private static short lineClearReward = 8;
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
@@ -40,8 +40,6 @@ public class Decision {
 		
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
-		
-		mode = (byte)2;
 		
 		if (mode == 0 && piece == 1) { //tetris
 			short[][] results = new short[1][3];
@@ -488,8 +486,6 @@ public class Decision {
 		boolean contact = false;
 		byte yPos = 20;
 		
-		cost += lowCost*20;
-		
 		while (!contact && yPos >= 0) {
 			
 			for (byte mino = 0; mino < minoCoordinates.length; mino++) {
@@ -503,9 +499,10 @@ public class Decision {
 			}
 			
 			yPos--;
-			cost -= lowCost;
 		}
 		yPos++;
+		
+		cost += yPos*lowCost;
 		
 		//Update board to contain dropped piece
 		for (byte mino = 0; mino < minoCoordinates.length; mino++) {
@@ -609,14 +606,22 @@ public class Decision {
 			}
 		}
 		
-		//High wells
+		//High wells. Only considers costs for wells that are not multiple
 		//At x = 0
+		short costiestWell = 0;
+		short currentWellCost = 0;
+		
 		for (byte y = 17; y >= 0; y--) {
+			currentWellCost = 0;
 			if (board[0][y] == 0) {
 				if (board[1][y] == 1) {
 					while (y >= 0 && board[0][y] == 0) {
 						y--;
 						cost += wellCost;
+						currentWellCost += wellCost;
+					}
+					if (currentWellCost > costiestWell) {
+						costiestWell = currentWellCost;
 					}
 					break;
 				}
@@ -625,13 +630,18 @@ public class Decision {
 				break;
 			}
 		}
-		//At x = range
+		//At x = 10
 		for (byte y = 17; y >= 0; y--) {
-			if (board[range-1][y] == 0) {
-				if (board[range-2][y] == 1) {
-					while (y >= 0 && board[range-1][y] == 0) {
+			currentWellCost = 0;
+			if (board[9][y] == 0) {
+				if (board[8][y] == 1) {
+					while (y >= 0 && board[9][y] == 0) {
 						y--;
 						cost += wellCost;
+						currentWellCost += wellCost;
+					}
+					if (currentWellCost > costiestWell) {
+						costiestWell = currentWellCost;
 					}
 					break;
 				}
@@ -641,13 +651,18 @@ public class Decision {
 			}
 		}
 		//And all the x in between
-		for (byte x = 1; x < range-1; x++) {
+		for (byte x = 1; x < 9; x++) {
+			currentWellCost = 0;
 			for (byte y = 17; y >= 0; y--) {
 				if (board[x][y] == 0) {
 					if (board[x-1][y] + board[x+1][y] == 2) {
 						while (y >= 0 && board[x][y] == 0) {
 							y--;
 							cost += wellCost;
+							currentWellCost += wellCost;
+						}
+						if (currentWellCost > costiestWell) {
+							costiestWell = currentWellCost;
 						}
 						break;
 					}
@@ -657,6 +672,8 @@ public class Decision {
 				}
 			}
 		}
+		
+		cost -= costiestWell; //ignore the highest costing well, because that's really your spike stack
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+cost);
