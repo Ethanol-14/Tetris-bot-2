@@ -1,12 +1,16 @@
 public class Decision {
-	private static short holeCost = 21;
+	private static short holeCost = 40;
 	private static short bumpCost = 2;
-	private static short lowCost = 4;
+	private static short bumpHeightIncreaser = 2;
+	private static short lowCost = 8;
 	private static short holeCostDecayRate = 2;
 	private static short lineClearReward = 10;
-	private static short tetrisFinalCost = 0;
 	
-	public static int[] FindBestPlacement(int[] queue, byte[][] board) {
+	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
+		//the queue is an integer array that represents the piece queue
+		//the poolSize is the accepted pool that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best moves then use those to update the boardstate and lookahead
+		//board is a 2D array of 0s and 1s that represent the board state
+		
 		int lowestCost = 9999;
 		
 		if (queue.length == 1) {
@@ -37,26 +41,30 @@ public class Decision {
 		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
 		byte mode = DecideMode(board);
 		
+		mode = (byte)2;
+		
 		if (mode == 0 && piece == 1) { //tetris
 			short[][] results = new short[1][3];
 			results[0][0] = 4;
 			results[0][1] = 1;
-			results[0][2] = tetrisFinalCost;
+			results[0][2] = 0;
 			System.out.println("TETRIS WOOO :D");
 			return results;
 		}
 		else if (mode == 2) { //clean stack
 			System.out.println("cleaning stack :(");
+			
 			short[][] results = TestCombinations(piece, board, (byte) 10);
 			return results;
 		}
 		else { //stack 9-0
 			System.out.println("Stacking 9-0 :)");
+			
 			short[][] results = TestCombinations(piece, board, (byte) 9);
 			return results;
 		}
 	}
-	
+			
 	private static short[][] TestCombinations(byte piece, byte[][] board, byte range) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		byte[][] pieceData = new byte[4][2];
@@ -463,7 +471,7 @@ public class Decision {
 		
 		return feedback;
 	}
-	
+
 	private static short CalculateCost(byte[][] minoCoordinates, byte[][] originalBoard, byte range) {
 		
 		short cost = 0;
@@ -518,7 +526,7 @@ public class Decision {
 			
 			if (sum == 0) {
 
-				for (int y2 = rank; y < 18; y++) {
+				for (int y2 = rank; y2 < 18; y2++) {
 					for (int x = 0; x < 10; x++) {
 						board[x][y2] = 0;
 					}
@@ -572,13 +580,16 @@ public class Decision {
 		}
 		
 		//int tempbumpcount=0;
+		short increasedBumpCost = 0;
 		
 		for (byte x = 1; x < range; x++) {
+			increasedBumpCost = 0;
 			
 			if (board[x][yLevel] == 1) { //we need to search up
 				while (board[x][yLevel] == 1) {
 					yLevel++;
-					cost += bumpCost;
+					cost += bumpCost + increasedBumpCost;
+					increasedBumpCost += bumpHeightIncreaser;
 					
 					//tempbumpcount++;
 					
@@ -590,7 +601,8 @@ public class Decision {
 			else if (yLevel > 0 && board[x][yLevel-1] == 0) { //we need to search down
 				while (board[x][yLevel-1] == 0) {
 					yLevel--;
-					cost += bumpCost;
+					cost += bumpCost + increasedBumpCost;
+					increasedBumpCost += bumpHeightIncreaser;
 					
 					//tempbumpcount++;
 					
@@ -602,6 +614,10 @@ public class Decision {
 		}
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
+		/*System.out.println("Cost: "+cost);
+		Board.Setboard(board);
+		Board.Refresh();
+		Delay(500);*/
 		
 		return cost;
 	}
@@ -631,6 +647,15 @@ public class Decision {
 		}
 		else { //the stack has not reached 4 blocks height yet
 			return 1;
+		}
+	}
+	
+	private static void Delay(int msec) {
+		try {
+		    Thread.sleep(msec);
+		}
+		catch(InterruptedException ex) {
+		    Thread.currentThread().interrupt();
 		}
 	}
 }

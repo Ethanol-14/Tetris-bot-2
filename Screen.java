@@ -121,10 +121,10 @@ public class Screen {
 		for (int x = 0; x < boardWidth; x++) {
 			for (int y = 1; y < 20; y++) {
 				if (screenshot.getRGB(x*slope[1], y*slope[0]) == -16777216) {
-					board[x][boardHeight-y-1] = 0;
+					board[x][boardHeight-y-6] = 0;
 				}
 				else {
-					board[x][boardHeight-y-1] = 1;
+					board[x][boardHeight-y-6] = 1;
 				}
 			}
 		}

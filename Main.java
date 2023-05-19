@@ -2,7 +2,7 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int delay = 700;
+	private static int delay = 10;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
@@ -11,18 +11,31 @@ public class Main {
 	private static int[][] piecePos = new int[depth][2];
 	private static int[] gamePos = {700, 400};
 	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
-	private static int[] boardDimensions = {10, 20};
 	
 	public static void main (String[] args) {
 		//System.out.println("test");
 		//Board.Init();
-		//Board.RandomizeFloor(0);
-		//TestT(5);
 		
 		configureForJstris();
-		Board.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
+		Board.SetBoardDimensions(10, 25);
+		/*for (int x = 1; x < 10; x++) {
+			for (int y = 0; y < 4; y++) {
+				Board.EditBoard(x, y, 1);
+			}
+		}*/
+		//TestI(6);
+		//Board.Refresh();
+		
+		//Delay(10000000);
+		
+		/*boolean lmao = true;
+		while (lmao) {
+			Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
+			Board.Refresh();
+			Delay(10);
+		}*/
 
-		Screen.SetBoardDimensions(boardDimensions[0], boardDimensions[1]);
+		Screen.SetBoardDimensions(10, 25);
 		Screen.FocusGame(gamePos, 20);
 		Screen.SetDelay(movementDelay);
 		
@@ -48,7 +61,7 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, Board.GetBoard()), movementDelay, false);
+				Screen.OutputMovement(Decision.FindBestPlacement(queue, 1, Board.GetBoard()), movementDelay, false);
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}
@@ -112,10 +125,10 @@ public class Main {
 		}
 	}
 	
-	/*private static void TestT(int y) {
-		byte[] queue = new byte[1];
+	private static void TestT(int y) {
+		int[] queue = new int[1];
 		queue[0] = 6;
-		short[] finals = Decision.FindBestPlacement(queue[0], Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -147,9 +160,9 @@ public class Main {
 	}
 	
 	private static void TestI(int y) {
-		byte[] queue = new byte[1];
+		int[] queue = new int[1];
 		queue[0] = 1;
-		short[] finals = Decision.FindBestPlacement(queue[0], Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -166,5 +179,5 @@ public class Main {
 			Board.EditBoard(5+finals[0], y+2, 1);
 			Board.EditBoard(5+finals[0], y+3, 1);
 		}
-	}*/
+	}
 }
