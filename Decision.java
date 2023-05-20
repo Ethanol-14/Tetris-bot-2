@@ -9,7 +9,7 @@ public class Decision {
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
-		//the poolSize is the accepted pool that the bot will use for lookahead. for example, poolSize = 5 means that the bot rwill take the 5 best moves then use those to update the boardstate and lookahead
+		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
 		
 		int lowestCost = 9999;
@@ -47,17 +47,17 @@ public class Decision {
 			results[0][0] = 4;
 			results[0][1] = 1;
 			results[0][2] = 0;
-			System.out.println("TETRIS WOOO :D");
+			//System.out.println("TETRIS WOOO :D");
 			return results;
 		}
 		else if (mode == 2) { //clean stack
-			System.out.println("cleaning stack :(");
+			//System.out.println("cleaning stack :(");
 			
 			short[][] results = TestCombinations(piece, board, (byte) 10);
 			return results;
 		}
 		else { //stack 9-0
-			System.out.println("Stacking 9-0 :)");
+			//System.out.println("Stacking 9-0 :)");
 			
 			short[][] results = TestCombinations(piece, board, (byte) 9);
 			return results;
@@ -745,6 +745,10 @@ public class Decision {
 				if (board[x][y] == 0 && board[x][y+1] == 1) { //hole found
 					return 2;
 				}
+			}
+			
+			if (board[x][12] == 1) {
+				return 2;
 			}
 		}
 		
