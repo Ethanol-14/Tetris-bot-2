@@ -1,9 +1,10 @@
 public class Decision {
-	private static short holeCost = 41;
-	private static short holeCostDecayRate = 2;
+	private static short holeCost = 15;
+	private static short holeSeverity = 10;
+	private static short holeCostDecayRate = 10;
 	private static short bumpCost = 1;
-	private static short lowCost = 4;
-	private static short wellCost = 3;
+	private static short lowCost = 2;
+	private static short wellCost = 5;
 	private static short lineClearReward = 8;
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
@@ -547,21 +548,58 @@ public class Decision {
 		
 		//Hole costs
 		short decayedHoleCost = holeCost;
+		short holeRanks = 1;
 		boolean holeFound = false;
 		
 		//int tempholecount = 0;
 		
-		for (byte y = 17; y >= 0; y--) {
-			for (byte x = 0; x < range; x++) {
-				if (board[x][y+1] == 1 && board[x][y] == 0) {
-					holeFound = true;
-					cost += decayedHoleCost;
+		if (linesCleared > 0) {
+			for (byte y = 17; y >= 0; y--) {
+				for (byte x = 0; x < range; x++) {
+					if (board[x][y+1] == 1 && board[x][y] == 0) {
+						holeFound = true;
+						cost += holeCost;
+					}
+				}
+				
+				if (holeFound) {
+					holeRanks++;
+					
+					holeFound = false;
 				}
 			}
-			
-			if (holeFound) {
-				decayedHoleCost /= holeCostDecayRate;
-				holeFound = false;
+		}
+		else {
+			for (byte y = 17; y >= 0; y--) {
+				for (byte x = 0; x < range; x++) {
+					if (board[x][y+1] == 1 && board[x][y] == 0) {
+						holeFound = true;
+						cost += holeCost + (holeSeverity/holeRanks);
+						
+						for (byte y2 = (byte) (y-1); y2 >= 0; y2--) { //the deeper the hole the worse
+							if (board[x][y2] == 1) {
+								break;
+							}
+							
+							cost += decayedHoleCost;
+						}
+						for (byte y2 = (byte) (y+1); y2 < 18; y2++) { //are you stacking on top of a hole? that's bad
+							if (board[x][y2] == 0) {
+								break;
+							}
+							
+							cost += decayedHoleCost;
+						}
+						//tempholecount++;
+					}
+				}
+				
+				if (holeFound) {
+					decayedHoleCost /= holeCostDecayRate;
+					holeRanks++;
+					
+					holeFound = false;
+				}
 			}
 		}
 		
@@ -583,7 +621,7 @@ public class Decision {
 			if (board[x][yLevel] == 1) { //we need to search up
 				while (board[x][yLevel] == 1) {
 					yLevel++;
-					cost += bumpCost ;
+					cost += bumpCost;
 					
 					//tempbumpcount++;
 					
@@ -615,6 +653,7 @@ public class Decision {
 			currentWellCost = 0;
 			if (board[0][y] == 0) {
 				if (board[1][y] == 1) {
+					currentWellCost -= wellCost;
 					while (y >= 0 && board[0][y] == 0) {
 						y--;
 						cost += wellCost;
@@ -635,6 +674,7 @@ public class Decision {
 			currentWellCost = 0;
 			if (board[9][y] == 0) {
 				if (board[8][y] == 1) {
+					currentWellCost -= wellCost;
 					while (y >= 0 && board[9][y] == 0) {
 						y--;
 						cost += wellCost;
@@ -656,6 +696,7 @@ public class Decision {
 			for (byte y = 17; y >= 0; y--) {
 				if (board[x][y] == 0) {
 					if (board[x-1][y] + board[x+1][y] == 2) {
+						currentWellCost -= wellCost;
 						while (y >= 0 && board[x][y] == 0) {
 							y--;
 							cost += wellCost;
@@ -673,7 +714,7 @@ public class Decision {
 			}
 		}
 		
-		cost -= costiestWell; //ignore the highest costing well, because that's really your spike stack
+		cost -= costiestWell; //ignore the highest costing well, because that's really your main well
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+cost);

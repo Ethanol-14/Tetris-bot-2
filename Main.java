@@ -2,8 +2,8 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int delay = 500;
-	private static int movementDelay = 5;
+	private static int delay = 200;
+	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
 	private static int[] topLeft = {604, 217};
@@ -18,20 +18,9 @@ public class Main {
 		
 		/*System.out.println("test");
 		Board.Init();
-		
-		for (int x = 0; x < 9; x++) {
-			for (int y = 0; y < 4; y++) {
-				Board.EditBoard(x, y, 1);
-			}
-		}
-		for (int x = 0; x < 0; x++) {
-			for (int y = 0; y < 4; y++) {
-				Board.EditBoard(x, y, 1);
-			}
-		}
-		TestI(6);
+		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
+		TestT(15);
 		Board.Refresh();
-		
 		Delay(10000000);*/
 		
 		/*boolean lmao = true;
