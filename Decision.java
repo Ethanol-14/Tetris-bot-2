@@ -1,15 +1,15 @@
 public class Decision {
-	private static short holeCost = 15;
+	private static short holeCost = 30;
 	private static short holeSeverity = 10;
 	private static short holeCostDecayRate = 10;
-	private static short bumpCost = 1;
+	private static short bumpCost = 3;
 	private static short lowCost = 2;
-	private static short wellCost = 5;
+	private static short wellCost = 8;
 	private static short lineClearReward = 8;
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
-		//the poolSize is the accepted pool that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best moves then use those to update the boardstate and lookahead
+		//the poolSize is the accepted pool that the bot will use for lookahead. for example, poolSize = 5 means that the bot rwill take the 5 best moves then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
 		
 		int lowestCost = 9999;
@@ -547,7 +547,7 @@ public class Decision {
 		//Calculate costs
 		
 		//Hole costs
-		short decayedHoleCost = holeCost;
+		short decayedHoleCost = holeSeverity;
 		short holeRanks = 1;
 		boolean holeFound = false;
 		

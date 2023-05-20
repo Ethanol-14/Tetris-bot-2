@@ -2,7 +2,7 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int delay = 200;
+	private static int delay = 10;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
