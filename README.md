@@ -13,7 +13,7 @@ The cost function is alos more sophisticated
 Anyways here's some good ol reliable values that worked well for korea stacking  
 private static short holeCost = 30;  
 private static short holeSeverity = 10;  
-private static short holeCostDecayRate = 10;  
+private static short holeCostDecayRate = 3;  
 private static short bumpCost = 3;  
 private static short lowCost = 2;  
 private static short wellCost = 8;  
