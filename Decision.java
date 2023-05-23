@@ -7,31 +7,52 @@ public class Decision {
 	private static short wellCost = 8;
 	private static short lineClearReward = 8;
 	
-	public static int[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
+	public static short[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
-		
-		int lowestCost = 9999;
+
+		byte lowestCostIndex = 0;
 		
 		if (queue.length == 1) {
-			int[] movement = new int[2];
 			
 			short[][] results = GiveRatings((byte) queue[0], board);
 			
-			for (int i = 0; i < results.length; i++) {
-				if (results[i][2] < lowestCost) {
-					movement[0] = results[i][0];
-					movement[1] = results[i][1];
-					
-					lowestCost = results[i][2];
+			for (byte i = 0; i < results.length; i++) {
+				if (results[i][2] < results[lowestCostIndex][2]) {
+					lowestCostIndex = i;
 				}
 			}
 			
-			return movement;
+			return results[lowestCostIndex];
 		}
 		else {
+			short[][] results = GiveRatings((byte) queue[0], board);
+			short[][] lowests = new short[poolSize][3];
+			byte[] indexIgnores = new byte[poolSize];
+			boolean ignoreIndex = false;
 			
+			for (byte x = 0; x < poolSize && x < results.length; x++) {
+				lowestCostIndex = 0;
+				for (byte i = 0; i < results.length; i++) {
+					if (results[i][2] < results[lowestCostIndex][2]) {
+						for (byte i2 = 0; i2 < indexIgnores.length; i2++) {
+							if (i == indexIgnores[i2]) {
+								ignoreIndex = true;
+								break;
+							}
+						}
+						if (!ignoreIndex) {
+							lowestCostIndex = i;
+						}
+						ignoreIndex = false;
+					}
+				}
+				lowests[x] = results[lowestCostIndex];
+			}
+			
+			//now how tf do I pass a whole updated board...
+			//okay since java is pass by reference maybe I'll just have CalculateCost give me a board
 		}
 		
 		return null;
@@ -46,7 +67,7 @@ public class Decision {
 			short[][] results = new short[1][3];
 			results[0][0] = 4;
 			results[0][1] = 1;
-			results[0][2] = 0;
+			results[0][2] = (short) (lineClearReward*-4);
 			//System.out.println("TETRIS WOOO :D");
 			return results;
 		}

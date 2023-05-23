@@ -2,7 +2,7 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int delay = 10;
+	private static int delay = 500;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
@@ -13,7 +13,7 @@ public class Main {
 	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
 	
 	public static void main (String[] args) {
-		configureForJstris();
+		configureForJstrisOnSchoolComputer();
 		Board.SetBoardDimensions(10, 25);
 		
 		/*System.out.println("test");
@@ -123,7 +123,7 @@ public class Main {
 	private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
-		int[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
+		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -157,7 +157,7 @@ public class Main {
 	private static void TestI(int y) {
 		int[] queue = new int[1];
 		queue[0] = 1;
-		int[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
+		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
