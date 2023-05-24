@@ -6,11 +6,12 @@ public class Main {
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
-	private static int[] topLeft = {604, 217};
-	private static int[] slope = {24, 24};
+	private static int[] topLeft = new int[2];
+	private static int[] slope = new int[2];
 	private static int[][] piecePos = new int[depth][2];
-	private static int[] gamePos = {700, 400};
-	private static int[] pieceColors = {155, 65, 91, 159, 177, 15, 41};
+	private static int[] gamePos = new int[2];
+	private static int[] pieceColors = new int[7];
+	private static int[] queuePieceColors = new int[7];
 	
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
@@ -70,14 +71,14 @@ public class Main {
 		slope[1] = 24;
 		piecePos[0][0] = 1018;
 		piecePos[0][1] = 217;
+		gamePos[0] = 1000;
+		gamePos[1] = 400;
 		
 		for (int x = 1; x < piecePos.length; x++) {
 			piecePos[x][0] = 0;
 			piecePos[x][1] = 0;
 		}
 		
-		gamePos[0] = 1000;
-		gamePos[1] = 400;
 		pieceColors[0] = 159;
 		pieceColors[1] = 155;
 		pieceColors[2] = 177;
@@ -85,6 +86,14 @@ public class Main {
 		pieceColors[4] = 91;
 		pieceColors[5] = 65;
 		pieceColors[6] = 41;
+		
+		queuePieceColors[0] = 159;
+		queuePieceColors[1] = 0;
+		queuePieceColors[2] = 177;
+		queuePieceColors[3] = 15;
+		queuePieceColors[4] = 91;
+		queuePieceColors[5] = 65;
+		queuePieceColors[6] = 41;
 	}
 	
 	private static void configureForJstrisOnSchoolComputer() {
@@ -94,14 +103,14 @@ public class Main {
 		slope[1] = 24;
 		piecePos[0][0] = 697;
 		piecePos[0][1] = 185;
+		gamePos[0] = 800;
+		gamePos[1] = 400;
 		
 		for (int x = 1; x < piecePos.length; x++) {
 			piecePos[x][0] = 0;
 			piecePos[x][1] = 0;
 		}
 		
-		gamePos[0] = 800;
-		gamePos[1] = 400;
 		pieceColors[0] = 159;
 		pieceColors[1] = 155;
 		pieceColors[2] = 177;
@@ -109,6 +118,14 @@ public class Main {
 		pieceColors[4] = 91;
 		pieceColors[5] = 65;
 		pieceColors[6] = 41;
+		
+		queuePieceColors[0] = 159;
+		queuePieceColors[1] = 0;
+		queuePieceColors[2] = 177;
+		queuePieceColors[3] = 15;
+		queuePieceColors[4] = 91;
+		queuePieceColors[5] = 65;
+		queuePieceColors[6] = 41;
 	}
 	
 	private static void Delay(int msec) {
