@@ -53,6 +53,29 @@ public class Decision {
 			
 			//now how tf do I pass a whole updated board...
 			//okay since java is pass by reference maybe I'll just have CalculateCost give me a board
+			//and since it'd be way too messy, I'll have to make actual objects now....
+			//fml maybe I'll just re-simulate piece falling and lineclearing
+			//I honestly don't know which solution is faster
+			
+			int[] newQueue = new int[queue.length-1];
+			
+			for (byte i = 0; i < newQueue.length; i++) {
+				newQueue[i] = queue[i+1];
+			}
+			
+			byte[][] boardCopy = new byte[10][25];
+			boardCopy = board;
+			
+			for (byte i = 0; i < poolSize && i < results.length; i++) {
+				
+				for (byte x = 0; x < board.length; x++) {
+					for (byte y = 0; y < board[0].length; y++) {
+						boardCopy[x][y] = board[x][y];
+					}
+				}
+				
+				FindBestPlacement(newQueue, poolSize, boardCopy);
+			}
 		}
 		
 		return null;
@@ -574,7 +597,7 @@ public class Decision {
 		
 		//int tempholecount = 0;
 		
-		if (linesCleared > 0) {
+		if (linesCleared != 0) {
 			for (byte y = 17; y >= 0; y--) {
 				for (byte x = 0; x < range; x++) {
 					if (board[x][y+1] == 1 && board[x][y] == 0) {
