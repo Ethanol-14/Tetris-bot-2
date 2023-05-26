@@ -701,7 +701,7 @@ public class Decision {
 			}
 		}
 		
-		//High wells. Only considers costs for wells that are not multiple
+		//High wells. Only considers costs for extra wells
 		//At x = 0
 		short costiestWell = 0;
 		short currentWellCost = 0;
