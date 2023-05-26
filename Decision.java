@@ -18,7 +18,7 @@ public class Decision {
 			
 			short[][] results = GiveRatings((byte) queue[0], board);
 			
-			for (byte i = 0; i < results.length; i++) {
+			for (byte i = 1; i < results.length; i++) {
 				if (results[i][2] < results[lowestCostIndex][2]) {
 					lowestCostIndex = i;
 				}
@@ -29,10 +29,11 @@ public class Decision {
 		else {
 			short[][] results = GiveRatings((byte) queue[0], board);
 			short[][] lowests = new short[poolSize][3];
+			
 			byte[] indexIgnores = new byte[poolSize];
 			boolean ignoreIndex = false;
 			
-			for (byte x = 0; x < poolSize && x < results.length; x++) {
+			for (byte x = 0; x < poolSize && x < results.length; x++) { //take out the best boardstates and put save the movement and costs in the lowest lists
 				lowestCostIndex = 0;
 				for (byte i = 0; i < results.length; i++) {
 					if (results[i][2] < results[lowestCostIndex][2]) {
@@ -56,17 +57,18 @@ public class Decision {
 			//and since it'd be way too messy, I'll have to make actual objects now....
 			//fml maybe I'll just re-simulate piece falling and lineclearing
 			//I honestly don't know which solution is faster
+			//in the future, each boardstate should be an object
 			
 			int[] newQueue = new int[queue.length-1];
 			
-			for (byte i = 0; i < newQueue.length; i++) {
+			for (byte i = 0; i < newQueue.length; i++) { //take away the first piece from the queue because we placed it
 				newQueue[i] = queue[i+1];
 			}
 			
 			byte[][] boardCopy = new byte[10][25];
 			boardCopy = board;
 			
-			for (byte i = 0; i < poolSize && i < results.length; i++) {
+			for (byte i = 0; i < poolSize && i < results.length; i++) { //test the best boardstates with the next piece in queue
 				
 				for (byte x = 0; x < board.length; x++) {
 					for (byte y = 0; y < board[0].length; y++) {
@@ -74,11 +76,22 @@ public class Decision {
 					}
 				}
 				
-				FindBestPlacement(newQueue, poolSize, boardCopy);
+				//place piece and clear lines in here
+				
+				//replace the cost of one boardstate with the lowest cost of the next piece's placement
+				//this should preserve the movement and rotation, while updating the cost to be the potential of the placement, rather than the current evaluation
+				lowests[i][2] = FindBestPlacement(newQueue, poolSize, boardCopy)[2];
 			}
+			
+			lowestCostIndex = 0;
+			for (byte i = 1; i < lowests.length; i++) {
+				if (lowests[i][2] < lowests[lowestCostIndex][2]) {
+					lowestCostIndex = i;
+				}
+			}
+			
+			return lowests[lowestCostIndex];
 		}
-		
-		return null;
 	}
 	
 	public static short[][] GiveRatings(byte piece, byte[][] board) {
