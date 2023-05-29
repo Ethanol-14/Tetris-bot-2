@@ -28,7 +28,7 @@ public class Decision {
 		else {
 			short[][] lowests = new short[poolSize][3];
 			
-			int[] indexIgnores = new int[poolSize];
+			short[] indexIgnores = new short[poolSize];
 			boolean ignoreIndex = false;
 			
 			for (int x = 0; x < poolSize && x < results.length; x++) { //take out the best boardstates and put save the movement and costs in the lowest lists
