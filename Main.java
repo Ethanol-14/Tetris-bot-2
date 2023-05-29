@@ -2,8 +2,10 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
+	private static int poolSize = 1;
+	
 	private static int delay = 10;
-	private static int movementDelay = 5;
+	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
 	private static int[] topLeft = new int[2];
@@ -57,7 +59,7 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, 1, Board.GetBoard()), movementDelay, false);
+				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, Board.GetBoard()), movementDelay, false);
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}

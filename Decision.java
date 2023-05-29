@@ -14,7 +14,7 @@ public class Decision {
 
 		int lowestCostIndex = 0;
 		
-		short[][] results = GiveRatings(queue[0], board);
+		short[][] results = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
 			for (int i = 1; i < results.length; i++) {
@@ -91,35 +91,8 @@ public class Decision {
 			return lowests[lowestCostIndex];
 		}
 	}
-	
-	public static short[][] GiveRatings(int piece, byte[][] board) {
-		
-		//Decide whether we need to clean up the stack, play a tetris, or continue stacking 9-0
-		int mode = DecideMode(board);
-		
-		if (mode == 0 && piece == 1) { //tetris
-			short[][] results = new short[1][3];
-			results[0][0] = 4;
-			results[0][1] = 1;
-			results[0][2] = (short) (lineClearReward*-4);
-			//System.out.println("TETRIS WOOO :D");
-			return results;
-		}
-		else if (mode == 2) { //clean stack
-			//System.out.println("cleaning stack :(");
 			
-			short[][] results = TestCombinations(piece, board, 10);
-			return results;
-		}
-		else { //stack 9-0
-			//System.out.println("Stacking 9-0 :)");
-			
-			short[][] results = TestCombinations(piece, board, 9);
-			return results;
-		}
-	}
-			
-	private static short[][] TestCombinations(int piece, byte[][] board, int range) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
+	private static short[][] TestCombinations(int piece, byte[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		int[][] pieceData = new int[4][2];
 		int i = 0;
@@ -128,9 +101,9 @@ public class Decision {
 		
 		if (piece == 0) { //O piece
 			
-			feedback = new short[range-1][3];
+			feedback = new short[9][3];
 			
-			for (short disp = -4; disp < range-5; disp++) {
+			for (short disp = -4; disp < 5; disp++) {
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -145,16 +118,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 1) { //I piece
 
-			feedback = new short[(2*range)-3][3];
+			feedback = new short[17][3];
 			
-			for (byte disp = -3; disp < range-6; disp++) { //rotation 0
+			for (byte disp = -3; disp < 4; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -169,11 +142,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -5; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -5; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+5;
 				pieceData[0][1] = 0;
 				
@@ -188,16 +161,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 2) { //S piece
 
-			feedback = new short[(2*range)-3][3];
+			feedback = new short[17][3];
 			
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+			for (byte disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -212,11 +185,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 2;
 				
@@ -231,16 +204,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 3) { //Z piece
 
-			feedback = new short[(2*range)-3][3];
+			feedback = new short[17][3];
 			
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+			for (byte disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -255,11 +228,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -274,16 +247,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 4) { //L piece
 
-			feedback = new short[(4*range)-6][3];
+			feedback = new short[34][3];
 			
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+			for (byte disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -298,11 +271,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 2;
 				
@@ -317,11 +290,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -336,11 +309,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
+			for (byte disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 2;
 				
@@ -355,16 +328,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 5) { //J piece
 
-			feedback = new short[(4*range)-6][3];
+			feedback = new short[34][3];
 			
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+			for (byte disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -379,11 +352,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -398,11 +371,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -417,11 +390,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
+			for (byte disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -436,16 +409,16 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
 		}
 		else if (piece == 6) { //T piece
 
-			feedback = new short[(4*range)-6][3];
+			feedback = new short[34][3];
 			
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 0
+			for (byte disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -460,11 +433,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -4; disp < range-5; disp++) { //rotation 1 (cw)
+			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -479,11 +452,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (byte disp = -3; disp < range-5; disp++) { //rotation 2 (180)
+			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -498,11 +471,11 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
-			for (short disp = -3; disp < range-4; disp++) { //rotation 3 (ccw)
+			for (short disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -517,7 +490,7 @@ public class Decision {
 				
 				feedback[i][0] = disp;
 				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board, range);
+				feedback[i][2] = CalculateCost(pieceData, board);
 				
 				i++;
 			}
@@ -526,7 +499,7 @@ public class Decision {
 		return feedback;
 	}
 
-	private static short CalculateCost(int[][] minoCoordinates, byte[][] originalBoard, int range) {
+	private static short CalculateCost(int[][] minoCoordinates, byte[][] originalBoard) {
 		
 		short cost = 0;
 		
@@ -610,7 +583,7 @@ public class Decision {
 		
 		if (linesCleared != 0) {
 			for (int y = 17; y >= 0; y--) {
-				for (int x = 0; x < range; x++) {
+				for (int x = 0; x < 10; x++) {
 					if (board[x][y+1] == 1 && board[x][y] == 0) {
 						holeFound = true;
 						cost += holeCost;
@@ -626,7 +599,7 @@ public class Decision {
 		}
 		else {
 			for (int y = 17; y >= 0; y--) {
-				for (int x = 0; x < range; x++) {
+				for (int x = 0; x < 10; x++) {
 					if (board[x][y+1] == 1 && board[x][y] == 0) {
 						holeFound = true;
 						cost += holeCost + (holeSeverity/holeRanks);
@@ -671,7 +644,7 @@ public class Decision {
 		
 		//int tempbumpcount=0;
 		
-		for (int x = 1; x < range; x++) {
+		for (int x = 1; x < 10; x++) {
 			
 			if (board[x][yLevel] == 1) { //we need to search up
 				while (board[x][yLevel] == 1) {
@@ -786,38 +759,6 @@ public class Decision {
 		}
 		catch(InterruptedException ex) {
 		    Thread.currentThread().interrupt();
-		}
-	}
-	
-	private static int DecideMode(byte[][] board) {
-		
-		//0 means you could play a tetris
-		//1 means continue stacking 9-0
-		//2 means clean up stack
-		
-		for (int x = 0; x < board.length; x++) {
-			for (int y = 0; y < 15; y++) {
-				if (board[x][y] == 0 && board[x][y+1] == 1) { //hole found
-					return 2;
-				}
-			}
-			
-			if (board[x][12] == 1) {
-				return 2;
-			}
-		}
-		
-		int sum = 0;
-		
-		for (int x = 0; x < board.length-1; x++) {
-			sum += board[x][3];
-		}
-		
-		if (sum == board.length-1) { //4th row is filled too
-			return 0;
-		}
-		else { //the stack has not reached 4 blocks height yet
-			return 1;
 		}
 	}
 }
