@@ -48,7 +48,7 @@ public class Screen {
 		boardHeight = height;
 	}
 	
-	public static void OutputMovement(short[] movement, int delayMsec, boolean useSecondary) {
+	public static void OutputMovement(int[] movement, int delayMsec, boolean useSecondary) {
 				
 		//System.out.println("Displacement: "+movement[0]);
 		//System.out.println("Spin: "+movement[1]);
@@ -135,10 +135,10 @@ public class Screen {
 		return board;
 	}
 	
-	public static byte DeterminePiece(int x, int y, int[] pieceColors) {
+	public static int DeterminePiece(int x, int y, int[] pieceColors) {
 		Color pixel = new Color(0);
 		
-		byte piece = -1;
+		int piece = -1;
 		
 		try {
 			computer = new Robot();
@@ -152,7 +152,7 @@ public class Screen {
 		
 		for (int n = 0; n < 7; n++) {
 			if (colorG == pieceColors[n]) {
-				piece = (byte) n;
+				piece = n;
 			}
 		}
 		
