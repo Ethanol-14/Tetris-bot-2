@@ -8,9 +8,6 @@ import javax.swing.JPanel;
 import java.util.Random;
 
 public class Board extends JPanel { //this class is really just for basic board visualization
-
-	private static final long serialVersionUID = -7326512691602942406L;
-	
 	private static JFrame frame = new JFrame("Block solution");
 	private static JPanel panel = new Board();
 	

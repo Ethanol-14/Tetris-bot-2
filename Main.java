@@ -2,10 +2,8 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 1;
-	private static int poolSize = 1;
-	
-	private static int delay = 10;
-	private static int movementDelay = 10;
+	private static int delay = 500;
+	private static int movementDelay = 5;
 	
 	private static int[] queue = new int[depth];
 	private static int[] topLeft = new int[2];
@@ -16,9 +14,8 @@ public class Main {
 	private static int[] queuePieceColors = new int[7];
 	
 	public static void main (String[] args) {
-		configureForJstrisOnSchoolComputer();
-		
-		byte[][] board = new byte[10][25];
+		configureForJstris();
+		Board.SetBoardDimensions(10, 25);
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -41,7 +38,7 @@ public class Main {
 		int failCount = 0;
 		
 		while (true) {
-			board = Screen.DetermineBoardData(topLeft, slope);
+			Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
 			
 			for (int x = 0; x < queue.length; x++) {
 				queue[x] = Screen.DeterminePiece(piecePos[x][0], piecePos[x][1], pieceColors);
@@ -60,7 +57,7 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, board), movementDelay, false);
+				Screen.OutputMovement(Decision.FindBestPlacement(queue, 1, Board.GetBoard()), movementDelay, false);
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}
@@ -140,7 +137,7 @@ public class Main {
 		}
 	}
 	
-	/*private static void TestT(int y) {
+	private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
 		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
@@ -194,5 +191,5 @@ public class Main {
 			Board.EditBoard(5+finals[0], y+2, 1);
 			Board.EditBoard(5+finals[0], y+3, 1);
 		}
-	}*/
+	}
 }
