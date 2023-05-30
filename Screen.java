@@ -48,7 +48,7 @@ public class Screen {
 		boardHeight = height;
 	}
 	
-	public static void OutputMovement(short[] movement, int delayMsec, boolean useSecondary) {
+	public static void OutputMovement(int[] movement, int delayMsec, boolean useSecondary) {
 				
 		//System.out.println("Displacement: "+movement[0]);
 		//System.out.println("Spin: "+movement[1]);

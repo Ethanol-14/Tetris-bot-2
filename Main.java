@@ -17,7 +17,8 @@ public class Main {
 	
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
-		Board.SetBoardDimensions(10, 25);
+		
+		byte[][] board = new byte[10][25];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -40,7 +41,7 @@ public class Main {
 		int failCount = 0;
 		
 		while (true) {
-			Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
+			board = Screen.DetermineBoardData(topLeft, slope);
 			
 			for (int x = 0; x < queue.length; x++) {
 				queue[x] = Screen.DeterminePiece(piecePos[x][0], piecePos[x][1], pieceColors);
@@ -59,7 +60,7 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, Board.GetBoard()), movementDelay, false);
+				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, board), movementDelay, false);
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}
@@ -139,7 +140,7 @@ public class Main {
 		}
 	}
 	
-	private static void TestT(int y) {
+	/*private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
 		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
@@ -193,5 +194,5 @@ public class Main {
 			Board.EditBoard(5+finals[0], y+2, 1);
 			Board.EditBoard(5+finals[0], y+3, 1);
 		}
-	}
+	}*/
 }

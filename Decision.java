@@ -1,20 +1,20 @@
 public class Decision {
-	private static int holeCost = 30;
-	private static int holeSeverity = 10;
-	private static int holeCostDecayRate = 10;
-	private static int bumpCost = 3;
-	private static int lowCost = 2;
-	private static int wellCost = 8;
-	private static int lineClearReward = 8;
+	private static int hole = -30;
+	private static int holeSeverity = -10;
+	private static int holeDecayRate = 10;
+	private static int bump = -3;
+	private static int StackSize = -2;
+	private static int well = -8;
+	private static int[] clears = {0, -20, -10, 10, 40};
 	
-	public static short[] FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
+	public static int[] FindBestPlacement(int[] queue, int poolSize, int[][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
 
 		int lowestCostIndex = 0;
-		
-		short[][] results = TestCombinations(queue[0], board);
+
+		Boardstate[] fields = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
 			for (int i = 1; i < results.length; i++) {
@@ -26,84 +26,23 @@ public class Decision {
 			return results[lowestCostIndex];
 		}
 		else {
-			short[][] lowests = new short[poolSize][3];
 			
-			short[] indexIgnores = new short[poolSize];
-			boolean ignoreIndex = false;
-			
-			for (int x = 0; x < poolSize && x < results.length; x++) { //take out the best boardstates and put save the movement and costs in the lowest lists
-				lowestCostIndex = 0;
-				for (int i = 0; i < results.length; i++) {
-					if (results[i][2] < results[lowestCostIndex][2]) {
-						for (int i2 = 0; i2 < indexIgnores.length; i2++) {
-							if (i == indexIgnores[i2]) {
-								ignoreIndex = true;
-								break;
-							}
-						}
-						if (!ignoreIndex) {
-							lowestCostIndex = i;
-						}
-						ignoreIndex = false;
-					}
-				}
-				lowests[x] = results[lowestCostIndex];
-			}
-			
-			//now how tf do I pass a whole updated board...
-			//okay since java is pass by reference maybe I'll just have CalculateCost give me a board
-			//and since it'd be way too messy, I'll have to make actual objects now....
-			//fml maybe I'll just re-simulate piece falling and lineclearing
-			//I honestly don't know which solution is faster
-			//in the future, each boardstate should be an object
-			
-			int[] newQueue = new int[queue.length-1];
-			
-			for (int i = 0; i < newQueue.length; i++) { //take away the first piece from the queue because we placed it
-				newQueue[i] = queue[i+1];
-			}
-			
-			byte[][] boardCopy = new byte[10][25];
-			boardCopy = board;
-			
-			for (int i = 0; i < poolSize && i < results.length; i++) { //test the best boardstates with the next piece in queue
-				
-				for (int x = 0; x < board.length; x++) {
-					for (int y = 0; y < board[0].length; y++) {
-						boardCopy[x][y] = board[x][y];
-					}
-				}
-				
-				//place piece and clear lines in here
-				
-				//replace the cost of one boardstate with the lowest cost of the next piece's placement
-				//this should preserve the movement and rotation, while updating the cost to be the potential of the placement, rather than the current evaluation
-				lowests[i][2] = FindBestPlacement(newQueue, poolSize, boardCopy)[2];
-			}
-			
-			lowestCostIndex = 0;
-			for (int i = 1; i < lowests.length; i++) {
-				if (lowests[i][2] < lowests[lowestCostIndex][2]) {
-					lowestCostIndex = i;
-				}
-			}
-			
-			return lowests[lowestCostIndex];
 		}
 	}
 			
-	private static short[][] TestCombinations(int piece, byte[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
+	private static Boardstate[] TestCombinations(int piece, int[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		int[][] pieceData = new int[4][2];
 		int i = 0;
 		
-		short[][] feedback = new short[0][0];
+		//int[][] feedback = new int[0][0];
 		
 		if (piece == 0) { //O piece
 			
-			feedback = new short[9][3];
+			//feedback = new int[9][3];
+			Boardstate[] fields = new Boardstate[9];
 			
-			for (short disp = -4; disp < 5; disp++) {
+			for (int disp = -4; disp < 5; disp++) {
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -116,18 +55,21 @@ public class Decision {
 				pieceData[3][0] = disp+5;
 				pieceData[3][1] = 1;
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				//feedback[i][0] = disp;
+				//feedback[i][1] = 0;
+				//feedback[i][2] = CalculateCost(pieceData, board);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].
 				
 				i++;
 			}
 		}
 		else if (piece == 1) { //I piece
 
-			feedback = new short[17][3];
+			feedback = new int[17][3];
 			
-			for (byte disp = -3; disp < 4; disp++) { //rotation 0
+			for (int disp = -3; disp < 4; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -146,7 +88,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -5; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -5; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+5;
 				pieceData[0][1] = 0;
 				
@@ -168,9 +110,9 @@ public class Decision {
 		}
 		else if (piece == 2) { //S piece
 
-			feedback = new short[17][3];
+			feedback = new int[17][3];
 			
-			for (byte disp = -3; disp < 5; disp++) { //rotation 0
+			for (int disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -189,7 +131,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 2;
 				
@@ -211,9 +153,9 @@ public class Decision {
 		}
 		else if (piece == 3) { //Z piece
 
-			feedback = new short[17][3];
+			feedback = new int[17][3];
 			
-			for (byte disp = -3; disp < 5; disp++) { //rotation 0
+			for (int disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -232,7 +174,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -254,9 +196,9 @@ public class Decision {
 		}
 		else if (piece == 4) { //L piece
 
-			feedback = new short[34][3];
+			feedback = new int[34][3];
 			
-			for (byte disp = -3; disp < 5; disp++) { //rotation 0
+			for (int disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -275,7 +217,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 2;
 				
@@ -294,7 +236,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
+			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -313,7 +255,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
+			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 2;
 				
@@ -335,9 +277,9 @@ public class Decision {
 		}
 		else if (piece == 5) { //J piece
 
-			feedback = new short[34][3];
+			feedback = new int[34][3];
 			
-			for (byte disp = -3; disp < 5; disp++) { //rotation 0
+			for (int disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -356,7 +298,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -375,7 +317,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
+			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -394,7 +336,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
+			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -416,9 +358,9 @@ public class Decision {
 		}
 		else if (piece == 6) { //T piece
 
-			feedback = new short[34][3];
+			feedback = new int[34][3];
 			
-			for (byte disp = -3; disp < 5; disp++) { //rotation 0
+			for (int disp = -3; disp < 5; disp++) { //rotation 0
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 0;
 				
@@ -437,7 +379,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				pieceData[0][0] = disp+4;
 				pieceData[0][1] = 0;
 				
@@ -456,7 +398,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (byte disp = -3; disp < 5; disp++) { //rotation 2 (180)
+			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -475,7 +417,7 @@ public class Decision {
 				
 				i++;
 			}
-			for (short disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
+			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				pieceData[0][0] = disp+3;
 				pieceData[0][1] = 1;
 				
@@ -499,17 +441,17 @@ public class Decision {
 		return feedback;
 	}
 
-	private static short CalculateCost(int[][] minoCoordinates, byte[][] originalBoard) {
+	private static Boardstate CalculateCost(int[][] minoCoordinates, int[][] originalBoard) {
 		
-		short cost = 0;
+		Boardstate field = new Boardstate();
+		field.SetBoard(originalBoard);
 		
-		byte board[][] = new byte[10][25];
-		
-		for (int x = 0; x < originalBoard.length; x++) {
+		/*byte[][] board = new byte[10][25];
+		for (int x = 0; x < originalBoard.length; x++) { //might need to bring this back due to java's default referencing... hopefully not tho
 			for (int y = 0; y < originalBoard[0].length; y++) {
 				board[x][y] = originalBoard[x][y];
 			}
-		}
+		}*/
 		
 		//Drop piece
 		boolean contact = false;
@@ -519,7 +461,7 @@ public class Decision {
 			
 			for (int mino = 0; mino < minoCoordinates.length; mino++) {
 				
-				if (board[minoCoordinates[mino][0]][yPos+minoCoordinates[mino][1]] == 1) {
+				if (field.GetBoard(minoCoordinates[mino][0], yPos+minoCoordinates[mino][1]) == 1) {
 					//we are immersed in floor
 					contact = true;
 					yPos++;
@@ -531,11 +473,11 @@ public class Decision {
 		}
 		yPos++;
 		
-		cost += yPos*lowCost;
+		//cost += yPos*lowCost;
 		
 		//Update board to contain dropped piece
 		for (int mino = 0; mino < minoCoordinates.length; mino++) {
-			board[minoCoordinates[mino][0]][minoCoordinates[mino][1]+yPos] = 1;
+			field.SetBoard(minoCoordinates[mino][0], minoCoordinates[mino][1]+yPos, 1);
 		}
 		
 		//Clear lines
@@ -547,21 +489,21 @@ public class Decision {
 			sum = 0;
 			
 			for (int x = 0; x < 10; x++) {
-				sum += board[x][y];
+				sum += field.GetBoard(x, y);
 			}
 			
 			if (sum == 0) {
 
 				for (int y2 = rank; y2 < 18; y2++) {
 					for (int x = 0; x < 10; x++) {
-						board[x][y2] = 0;
+						field.SetBoard(x, y2, 0);
 					}
 				}
 				break;
 			}
 			else if (sum != 10) {
 				for (int x = 0; x < 10; x++) {
-					board[x][rank] = board[x][y];
+					field.SetBoard(x, rank, field.GetBoard(x, y));
 				}
 				rank++;
 			}
@@ -570,7 +512,8 @@ public class Decision {
 			}
 		}
 		
-		cost -= linesCleared*lineClearReward;
+		//cost -= linesCleared*lineClear;
+		field.ChangeScore(clears[linesCleared]);
 		
 		//Calculate costs
 		
