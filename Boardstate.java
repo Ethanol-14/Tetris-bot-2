@@ -16,7 +16,7 @@ public class Boardstate {
 		return movement;
 	}
 	
-	public int GetCost() {
+	public int GetScore() {
 		return score;
 	}
 	
@@ -38,7 +38,7 @@ public class Boardstate {
 	}
 	
 	public void ChangeScore(int _changeInScore) {
-		score += _changeInScore; 
+		score += _changeInScore;
 	}
 	
 	public void SetBoard(int[][] _board) {
@@ -47,5 +47,10 @@ public class Boardstate {
 	
 	public void SetBoard(int x, int y, int value) {
 		board[x][y] = value;
+	}
+	
+	public void SetBoardAndScore(Boardstate _field) {
+		score = _field.GetScore();
+		board = _field.GetBoard();
 	}
 }

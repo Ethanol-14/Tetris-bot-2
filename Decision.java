@@ -60,7 +60,7 @@ public class Decision {
 				//feedback[i][2] = CalculateCost(pieceData, board);
 				
 				fields[i].SetMovement(disp, 0);
-				fields[i].
+				fields[i].SetBoardAndScore(CalculateCost(pieceData, board));
 				
 				i++;
 			}
@@ -511,70 +511,15 @@ public class Decision {
 				linesCleared++;
 			}
 		}
-		
-		//cost -= linesCleared*lineClear;
+
 		field.ChangeScore(clears[linesCleared]);
 		
 		//Calculate costs
 		
 		//Hole costs
-		int decayedHoleCost = holeSeverity;
-		int holeRanks = 1;
-		boolean holeFound = false;
+		//redo hole costs cause it sucks rn
 		
-		//int tempholecount = 0;
 		
-		if (linesCleared != 0) {
-			for (int y = 17; y >= 0; y--) {
-				for (int x = 0; x < 10; x++) {
-					if (board[x][y+1] == 1 && board[x][y] == 0) {
-						holeFound = true;
-						cost += holeCost;
-					}
-				}
-				
-				if (holeFound) {
-					holeRanks++;
-					
-					holeFound = false;
-				}
-			}
-		}
-		else {
-			for (int y = 17; y >= 0; y--) {
-				for (int x = 0; x < 10; x++) {
-					if (board[x][y+1] == 1 && board[x][y] == 0) {
-						holeFound = true;
-						cost += holeCost + (holeSeverity/holeRanks);
-						
-						for (int y2 = y-1; y2 >= 0; y2--) { //the deeper the hole the worse
-							if (board[x][y2] == 1) {
-								break;
-							}
-							
-							cost += decayedHoleCost;
-						}
-						for (int y2 = y+1; y2 < 18; y2++) { //are you stacking on top of a hole? that's bad
-							if (board[x][y2] == 0) {
-								break;
-							}
-							
-							cost += decayedHoleCost;
-						}
-						//tempholecount++;
-					}
-				}
-				
-				if (holeFound) {
-					decayedHoleCost /= holeCostDecayRate;
-					holeRanks++;
-					
-					holeFound = false;
-				}
-			}
-		}
-		
-		//System.out.println("Hole count: "+tempholecount);
 		
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
@@ -615,23 +560,15 @@ public class Decision {
 			}
 		}
 		
-		//High wells. Only considers costs for extra wells
+		//High wells
 		//At x = 0
-		int costiestWell = 0;
-		int currentWellCost = 0;
 		
 		for (int y = 17; y >= 0; y--) {
-			currentWellCost = 0;
 			if (board[0][y] == 0) {
 				if (board[1][y] == 1) {
-					currentWellCost -= wellCost;
 					while (y >= 0 && board[0][y] == 0) {
 						y--;
 						cost += wellCost;
-						currentWellCost += wellCost;
-					}
-					if (currentWellCost > costiestWell) {
-						costiestWell = currentWellCost;
 					}
 					break;
 				}
@@ -642,17 +579,11 @@ public class Decision {
 		}
 		//At x = 10
 		for (int y = 17; y >= 0; y--) {
-			currentWellCost = 0;
 			if (board[9][y] == 0) {
 				if (board[8][y] == 1) {
-					currentWellCost -= wellCost;
 					while (y >= 0 && board[9][y] == 0) {
 						y--;
 						cost += wellCost;
-						currentWellCost += wellCost;
-					}
-					if (currentWellCost > costiestWell) {
-						costiestWell = currentWellCost;
 					}
 					break;
 				}
@@ -663,18 +594,12 @@ public class Decision {
 		}
 		//And all the x in between
 		for (int x = 1; x < 9; x++) {
-			currentWellCost = 0;
 			for (int y = 17; y >= 0; y--) {
 				if (board[x][y] == 0) {
 					if (board[x-1][y] + board[x+1][y] == 2) {
-						currentWellCost -= wellCost;
 						while (y >= 0 && board[x][y] == 0) {
 							y--;
 							cost += wellCost;
-							currentWellCost += wellCost;
-						}
-						if (currentWellCost > costiestWell) {
-							costiestWell = currentWellCost;
 						}
 						break;
 					}
@@ -684,8 +609,6 @@ public class Decision {
 				}
 			}
 		}
-		
-		cost -= costiestWell; //ignore the highest costing well, because that's really your main well
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+cost);
