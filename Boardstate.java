@@ -1,6 +1,7 @@
 public class Boardstate {
 	
 	private int piece = 0;
+	private int[][] pieceData = new int[4][2];
 	private int[] movement = new int[3];
 	private int score = 0;
 	private int[][] board = new int[10][25];
@@ -10,6 +11,14 @@ public class Boardstate {
 	
 	public int GetPiece() {
 		return piece;
+	}
+	
+	public int[][] GetPieceData() {
+		return pieceData;
+	}
+	
+	public int GetPieceData(int x, int y) {
+		return pieceData[x][y];
 	}
 	
 	public int[] GetMovement() {
@@ -30,6 +39,14 @@ public class Boardstate {
 	
 	public void SetPiece(int _piece) {
 		piece = _piece;
+	}
+	
+	public void SetPieceData(int[][] _pieceData) {
+		pieceData = _pieceData;
+	}
+	
+	public void SetPieceData(int x, int y, int value) {
+		pieceData[x][y] = value;
 	}
 	
 	public void SetMovement(int _displacement, int _rotation) {

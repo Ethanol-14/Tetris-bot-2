@@ -55,10 +55,6 @@ public class Decision {
 				pieceData[3][0] = disp+5;
 				pieceData[3][1] = 1;
 				
-				//feedback[i][0] = disp;
-				//feedback[i][1] = 0;
-				//feedback[i][2] = CalculateCost(pieceData, board);
-				
 				fields[i].SetMovement(disp, 0);
 				fields[i].SetBoardAndScore(CalculateCost(pieceData, board));
 				
@@ -441,10 +437,7 @@ public class Decision {
 		return feedback;
 	}
 
-	private static Boardstate CalculateCost(int[][] minoCoordinates, int[][] originalBoard) {
-		
-		Boardstate field = new Boardstate();
-		field.SetBoard(originalBoard);
+	private static Boardstate CalculateCost(Boardstate field) {
 		
 		/*byte[][] board = new byte[10][25];
 		for (int x = 0; x < originalBoard.length; x++) { //might need to bring this back due to java's default referencing... hopefully not tho
@@ -459,9 +452,9 @@ public class Decision {
 		
 		while (!contact && yPos >= 0) {
 			
-			for (int mino = 0; mino < minoCoordinates.length; mino++) {
+			for (int mino = 0; mino < 4; mino++) {
 				
-				if (field.GetBoard(minoCoordinates[mino][0], yPos+minoCoordinates[mino][1]) == 1) {
+				if (field.GetBoard(field.GetPieceData(mino, 0), yPos+field.GetPieceData(mino, 1)) == 1) {
 					//we are immersed in floor
 					contact = true;
 					yPos++;
@@ -476,8 +469,8 @@ public class Decision {
 		//cost += yPos*lowCost;
 		
 		//Update board to contain dropped piece
-		for (int mino = 0; mino < minoCoordinates.length; mino++) {
-			field.SetBoard(minoCoordinates[mino][0], minoCoordinates[mino][1]+yPos, 1);
+		for (int mino = 0; mino < 4; mino++) {
+			field.SetBoard(field.GetPieceData(mino, 0), field.GetPieceData(mino, 1)+yPos, 1);
 		}
 		
 		//Clear lines
@@ -524,7 +517,7 @@ public class Decision {
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
 		for (int y = 17; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
-			if (board[0][y] == 1) {
+			if (field.GetBoard(0, y) == 1) {
 				yLevel = y+1;
 				break;
 			}
@@ -534,10 +527,10 @@ public class Decision {
 		
 		for (int x = 1; x < 10; x++) {
 			
-			if (board[x][yLevel] == 1) { //we need to search up
-				while (board[x][yLevel] == 1) {
+			if (field.GetBoard(x, yLevel) == 1) { //we need to search up
+				while (field.GetBoard(x, yLevel) == 1) {
 					yLevel++;
-					cost += bumpCost;
+					field.ChangeScore(bump);
 					
 					//tempbumpcount++;
 					
@@ -546,10 +539,10 @@ public class Decision {
 					}
 				}
 			}
-			else if (yLevel > 0 && board[x][yLevel-1] == 0) { //we need to search down
-				while (board[x][yLevel-1] == 0) {
+			else if (yLevel > 0 && field.GetBoard(x, yLevel-1) == 0) { //we need to search down
+				while (field.GetBoard(x, yLevel-1) == 0) {
 					yLevel--;
-					cost += bumpCost;
+					field.ChangeScore(bump);
 					
 					//tempbumpcount++;
 					
@@ -564,11 +557,11 @@ public class Decision {
 		//At x = 0
 		
 		for (int y = 17; y >= 0; y--) {
-			if (board[0][y] == 0) {
-				if (board[1][y] == 1) {
-					while (y >= 0 && board[0][y] == 0) {
+			if (field.GetBoard(0, y) == 0) {
+				if (field.GetBoard(1, y) == 1) {
+					while (y >= 0 && field.GetBoard(0, y) == 0) {
 						y--;
-						cost += wellCost;
+						field.ChangeScore(well);
 					}
 					break;
 				}
@@ -579,11 +572,11 @@ public class Decision {
 		}
 		//At x = 10
 		for (int y = 17; y >= 0; y--) {
-			if (board[9][y] == 0) {
-				if (board[8][y] == 1) {
-					while (y >= 0 && board[9][y] == 0) {
+			if (field.GetBoard(9, y) == 0) {
+				if (field.GetBoard(8, y) == 1) {
+					while (y >= 0 && field.GetBoard(9, y) == 0) {
 						y--;
-						cost += wellCost;
+						field.ChangeScore(well);
 					}
 					break;
 				}
@@ -595,11 +588,11 @@ public class Decision {
 		//And all the x in between
 		for (int x = 1; x < 9; x++) {
 			for (int y = 17; y >= 0; y--) {
-				if (board[x][y] == 0) {
-					if (board[x-1][y] + board[x+1][y] == 2) {
-						while (y >= 0 && board[x][y] == 0) {
+				if (field.GetBoard(x, y) == 0) {
+					if (field.GetBoard(x-1, y) + field.GetBoard(x+1, y) == 2) {
+						while (y >= 0 && field.GetBoard(x, y) == 0) {
 							y--;
-							cost += wellCost;
+							field.ChangeScore(well);
 						}
 						break;
 					}
@@ -616,7 +609,7 @@ public class Decision {
 		Board.Refresh();
 		Delay(1000);*/
 		
-		return cost;
+		return field;
 	}
 	
 	private static void Delay(int msec) {
