@@ -18,7 +18,7 @@ public class Main {
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
 		
-		byte[][] board = new byte[10][25];
+		int[][] board = new int[10][21];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -34,7 +34,7 @@ public class Main {
 			Delay(10);
 		}*/
 
-		Screen.SetBoardDimensions(10, 25);
+		Screen.SetBoardDimensions(10, 21);
 		Screen.FocusGame(gamePos, 20);
 		Screen.SetDelay(movementDelay);
 		

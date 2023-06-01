@@ -1,11 +1,10 @@
 public class Decision {
-	private static int hole = -30;
-	private static int holeSeverity = -10;
-	private static int holeDecayRate = 10;
-	private static int bump = -3;
-	private static int StackSize = -2;
-	private static int well = -8;
-	private static int[] clears = {0, -20, -10, 10, 40};
+	private static final int hole = -30;
+	private static final int holeCover = -10;
+	private static final int bump = -3;
+	private static final int stackSize = -2;
+	//private static final int well = -8;
+	private static final int[] clears = {0, -20, -10, 10, 40};
 	
 	public static int[] FindBestPlacement(int[] queue, int poolSize, int[][] board) {
 		//the queue is an integer array that represents the piece queue
@@ -448,7 +447,7 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		int yPos = 20;
+		int yPos = 17;
 		
 		while (!contact && yPos >= 0) {
 			
@@ -485,13 +484,16 @@ public class Decision {
 				sum += field.GetBoard(x, y);
 			}
 			
-			if (sum == 0) {
+			if (sum == 0) { //nothing left
 
 				for (int y2 = rank; y2 < 18; y2++) {
 					for (int x = 0; x < 10; x++) {
 						field.SetBoard(x, y2, 0);
 					}
 				}
+				
+				field.ChangeScore(y*stackSize);
+				
 				break;
 			}
 			else if (sum != 10) {
@@ -516,7 +518,7 @@ public class Decision {
 		
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
-		for (int y = 17; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
+		for (int y = 18; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (field.GetBoard(0, y) == 1) {
 				yLevel = y+1;
 				break;
@@ -534,7 +536,7 @@ public class Decision {
 					
 					//tempbumpcount++;
 					
-					if (yLevel >= 17) { //too high
+					if (yLevel >= 18) { //too high
 						break;
 					}
 				}
@@ -556,7 +558,7 @@ public class Decision {
 		//High wells
 		//At x = 0
 		
-		for (int y = 17; y >= 0; y--) {
+		/*for (int y = 17; y >= 0; y--) {
 			if (field.GetBoard(0, y) == 0) {
 				if (field.GetBoard(1, y) == 1) {
 					while (y >= 0 && field.GetBoard(0, y) == 0) {
@@ -601,7 +603,7 @@ public class Decision {
 					break;
 				}
 			}
-		}
+		}*/
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+cost);

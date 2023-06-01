@@ -3,7 +3,7 @@ public class Boardstate {
 	private int piece = 0;
 	private int[][] pieceData = new int[4][2];
 	private int[] movementAndScore = new int[3];
-	private int[][] board = new int[10][25];
+	private int[][] board = new int[10][21];
 	
 	//object declaration
 	public Boardstate() {}
