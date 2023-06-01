@@ -7,3 +7,4 @@ Changes to be made:
 -Wells will probably not be calculated anymore, due to the algorithm covering them up cause of how painful it is to have a well  
 -Lookahead will actually be implemented  
 -More weights inspired from coldclear will be added such as the genius scoring based on number of lines cleared and scoreing based on board height  
+-The algorithm will screenshot a larger window as to find board, hold, current, and queue all in one go
