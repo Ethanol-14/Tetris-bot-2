@@ -17,424 +17,424 @@ public class Decision {
 		Boardstate[] fields = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
-			for (int i = 1; i < results.length; i++) {
-				if (results[i][2] < results[lowestCostIndex][2]) {
+			for (int i = 1; i < fields.length; i++) {
+				if (fields[i].GetScore() < fields[lowestCostIndex].GetScore()) {
 					lowestCostIndex = i;
 				}
 			}
 			
-			return results[lowestCostIndex];
+			return fields[lowestCostIndex].GetMovementAndScore();
 		}
 		else {
 			
 		}
+		
+		return null;
 	}
 			
 	private static Boardstate[] TestCombinations(int piece, int[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
-		int[][] pieceData = new int[4][2];
 		int i = 0;
 		
-		//int[][] feedback = new int[0][0];
+		Boardstate[] fields = new Boardstate[0];
 		
 		if (piece == 0) { //O piece
-			
-			//feedback = new int[9][3];
-			Boardstate[] fields = new Boardstate[9];
+			fields = new Boardstate[9];
 			
 			for (int disp = -4; disp < 5; disp++) {
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 0;
+
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
 				
 				fields[i].SetMovement(disp, 0);
-				fields[i].SetBoardAndScore(CalculateCost(pieceData, board));
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 1) { //I piece
 
-			feedback = new int[17][3];
+			fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 4; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+6;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+6);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -5; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+5;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+5;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+5);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 2;
+				fields[i].SetPieceData(1, 0, disp+5);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 3;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 2);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 3);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 2) { //S piece
 
-			feedback = new int[17][3];
+			fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 2);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 3) { //Z piece
 
-			feedback = new int[17][3];
+			fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 1);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 2;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 2);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 4) { //L piece
 
-			feedback = new int[34][3];
+			fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 2);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+3;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+3);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
+				
+				fields[i].SetMovement(disp, 2);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 2;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 2;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 2);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 2);
 				
-				pieceData[3][0] = disp+4;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+4);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 3);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 5) { //J piece
 
-			feedback = new int[34][3];
+			fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = disp+3;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 1);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+3);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 2;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 2;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 2);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 2);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 1);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 2);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+4;
-				pieceData[3][1] = 2;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+4);
+				fields[i].SetPieceData(3, 1, 2);
+				
+				fields[i].SetMovement(disp, 3);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		else if (piece == 6) { //T piece
 
-			feedback = new int[34][3];
+			fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 0;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+4;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 0);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 0;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
+				
+				fields[i].SetMovement(disp, 0);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
-				pieceData[0][0] = disp+4;
-				pieceData[0][1] = 0;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+4);
+				fields[i].SetPieceData(0, 1, 0);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 2;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+5;
-				pieceData[3][1] = 1;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 2);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 1;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 1, 1);
+				
+				fields[i].SetMovement(disp, 1);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 1;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 1);
 				
-				pieceData[2][0] = disp+5;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 1);
 				
-				pieceData[3][0] = disp+4;
-				pieceData[3][1] = 0;
+				fields[i].SetPieceData(2, 0, disp+5);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 2;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+4);
+				fields[i].SetPieceData(3, 1, 0);
+				
+				fields[i].SetMovement(disp, 2);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
-				pieceData[0][0] = disp+3;
-				pieceData[0][1] = 1;
 				
-				pieceData[1][0] = disp+4;
-				pieceData[1][1] = 0;
+				fields[i].SetPieceData(0, 0, disp+3);
+				fields[i].SetPieceData(0, 1, 1);
 				
-				pieceData[2][0] = disp+4;
-				pieceData[2][1] = 1;
+				fields[i].SetPieceData(1, 0, disp+4);
+				fields[i].SetPieceData(1, 1, 0);
 				
-				pieceData[3][0] = disp+4;
-				pieceData[3][1] = 2;
+				fields[i].SetPieceData(2, 0, disp+4);
+				fields[i].SetPieceData(2, 1, 1);
 				
-				feedback[i][0] = disp;
-				feedback[i][1] = 3;
-				feedback[i][2] = CalculateCost(pieceData, board);
+				fields[i].SetPieceData(3, 0, disp+4);
+				fields[i].SetPieceData(3, 1, 2);
+				
+				fields[i].SetMovement(disp, 3);
+				fields[i].SetBoardAndScore(CalculateCost(fields[i]));
 				
 				i++;
 			}
 		}
 		
-		return feedback;
+		return fields;
 	}
 
 	private static Boardstate CalculateCost(Boardstate field) {

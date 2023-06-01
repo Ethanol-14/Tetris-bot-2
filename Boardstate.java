@@ -2,8 +2,7 @@ public class Boardstate {
 	
 	private int piece = 0;
 	private int[][] pieceData = new int[4][2];
-	private int[] movement = new int[3];
-	private int score = 0;
+	private int[] movementAndScore = new int[3];
 	private int[][] board = new int[10][25];
 	
 	//object declaration
@@ -21,12 +20,8 @@ public class Boardstate {
 		return pieceData[x][y];
 	}
 	
-	public int[] GetMovement() {
-		return movement;
-	}
-	
 	public int GetScore() {
-		return score;
+		return movementAndScore[2];
 	}
 	
 	public int[][] GetBoard() {
@@ -35,6 +30,10 @@ public class Boardstate {
 	
 	public int GetBoard(int x, int y) {
 		return board[x][y];
+	}
+	
+	public int[] GetMovementAndScore() {
+		return movementAndScore;
 	}
 	
 	public void SetPiece(int _piece) {
@@ -50,12 +49,12 @@ public class Boardstate {
 	}
 	
 	public void SetMovement(int _displacement, int _rotation) {
-		movement[0] = _displacement;
-		movement[1] = _rotation;
+		movementAndScore[0] = _displacement;
+		movementAndScore[1] = _rotation;
 	}
 	
 	public void ChangeScore(int _changeInScore) {
-		score += _changeInScore;
+		movementAndScore[2] += _changeInScore;
 	}
 	
 	public void SetBoard(int[][] _board) {
@@ -67,7 +66,7 @@ public class Boardstate {
 	}
 	
 	public void SetBoardAndScore(Boardstate _field) {
-		score = _field.GetScore();
+		movementAndScore[2] = _field.GetScore();
 		board = _field.GetBoard();
 	}
 }
