@@ -548,7 +548,7 @@ public class Decision {
 		//Hole costs
 		int potentialCovers = 0;
 		
-		for (int x = 0; x < 10; x++) {
+		for (int x = 0; x < 10; x++) { //mfw when I need to re-write the entirety of this hole cost section to implement hole cost decay
 			
 			potentialCovers = 0;
 			
