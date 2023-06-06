@@ -3,7 +3,7 @@ public class Boardstate {
 	private int piece = 0;
 	private int[][] pieceData = new int[4][2];
 	private int[] movementAndScore = new int[3];
-	private int[][] board = new int[10][21];
+	private int[][] board = new int[10][22];
 	
 	//object declaration
 	public Boardstate() {}
@@ -58,7 +58,11 @@ public class Boardstate {
 	}
 	
 	public void SetBoard(int[][] _board) {
-		board = _board;
+		for (int x = 0; x < _board.length; x++) {
+			for (int y = 0; y < _board[0].length; y++) {
+				board[x][y] = _board[x][y];
+			}
+		}
 	}
 	
 	public void SetBoard(int x, int y, int value) {

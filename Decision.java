@@ -1,5 +1,5 @@
 public class Decision {
-	private static final int hole = -30;
+	private static final int hole = -40;
 	private static final int holeCover = -10;
 	private static final int bump = -3;
 	private static final int stackSize = -2;
@@ -17,11 +17,11 @@ public class Decision {
 		
 		if (queue.length == 1) {
 			for (int i = 1; i < fields.length; i++) {
-				if (fields[i].GetScore() < fields[lowestCostIndex].GetScore()) {
+				if (fields[i].GetScore() > fields[lowestCostIndex].GetScore()) {
 					lowestCostIndex = i;
 				}
 			}
-			
+			System.out.println(fields[lowestCostIndex].GetScore());
 			return fields[lowestCostIndex].GetMovementAndScore();
 		}
 		else {
@@ -35,12 +35,12 @@ public class Decision {
 		
 		int i = 0;
 		
-		Boardstate[] fields = new Boardstate[0];
-		
 		if (piece == 0) { //O piece
-			fields = new Boardstate[9];
+			Boardstate[] fields = new Boardstate[9];
 			
 			for (int disp = -4; disp < 5; disp++) {
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 
@@ -61,12 +61,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 1) { //I piece
 
-			fields = new Boardstate[17];
+			Boardstate[] fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 4; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -89,6 +93,8 @@ public class Decision {
 			}
 			for (int disp = -5; disp < 5; disp++) { //rotation 1 (cw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+5);
@@ -108,12 +114,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 2) { //S piece
 
-			fields = new Boardstate[17];
+			Boardstate[] fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -136,6 +146,8 @@ public class Decision {
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+4);
@@ -155,12 +167,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 3) { //Z piece
 
-			fields = new Boardstate[17];
+			Boardstate[] fields = new Boardstate[17];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -183,6 +199,8 @@ public class Decision {
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+4);
@@ -202,12 +220,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 4) { //L piece
 
-			fields = new Boardstate[34];
+			Boardstate[] fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -230,6 +252,8 @@ public class Decision {
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+4);
@@ -251,6 +275,8 @@ public class Decision {
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+3);
@@ -271,6 +297,8 @@ public class Decision {
 				i++;
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -291,12 +319,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 5) { //J piece
 
-			fields = new Boardstate[34];
+			Boardstate[] fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -319,6 +351,8 @@ public class Decision {
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+4);
@@ -339,6 +373,8 @@ public class Decision {
 				i++;
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -361,6 +397,8 @@ public class Decision {
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+3);
@@ -380,12 +418,16 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
 		else if (piece == 6) { //T piece
 
-			fields = new Boardstate[34];
+			Boardstate[] fields = new Boardstate[34];
 			
 			for (int disp = -3; disp < 5; disp++) { //rotation 0
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -398,7 +440,7 @@ public class Decision {
 				fields[i].SetPieceData(2, 0, disp+5);
 				fields[i].SetPieceData(2, 1, 0);
 				
-				fields[i].SetPieceData(3, 0, disp+5);
+				fields[i].SetPieceData(3, 0, disp+4);
 				fields[i].SetPieceData(3, 1, 1);
 				
 				fields[i].SetMovement(disp, 0);
@@ -407,6 +449,8 @@ public class Decision {
 				i++;
 			}
 			for (int disp = -4; disp < 5; disp++) { //rotation 1 (cw)
+				
+				fields[i] = new Boardstate();
 				
 				fields[i].SetBoard(board);
 				
@@ -429,6 +473,8 @@ public class Decision {
 			}
 			for (int disp = -3; disp < 5; disp++) { //rotation 2 (180)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+3);
@@ -450,6 +496,8 @@ public class Decision {
 			}
 			for (int disp = -3; disp < 6; disp++) { //rotation 3 (ccw)
 				
+				fields[i] = new Boardstate();
+				
 				fields[i].SetBoard(board);
 				
 				fields[i].SetPieceData(0, 0, disp+3);
@@ -469,9 +517,10 @@ public class Decision {
 				
 				i++;
 			}
+			
+			return fields;
 		}
-		
-		return fields;
+		return null;
 	}
 
 	private static Boardstate CalculateCost(Boardstate field) {
@@ -573,7 +622,7 @@ public class Decision {
 		
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
-		for (int y = 18; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
+		for (int y = 17; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (field.GetBoard(0, y) == 1) {
 				yLevel = y+1;
 				break;
@@ -581,9 +630,7 @@ public class Decision {
 		}
 		
 		//int tempbumpcount=0;
-		
 		for (int x = 1; x < 10; x++) {
-			
 			if (field.GetBoard(x, yLevel) == 1) { //we need to search up
 				while (field.GetBoard(x, yLevel) == 1) {
 					yLevel++;
@@ -661,8 +708,8 @@ public class Decision {
 		}*/
 		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
-		/*System.out.println("Cost: "+cost);
-		Board.Setboard(board);
+		/*System.out.println("Cost: "+field.GetScore());
+		Board.Setboard(field.GetBoard());
 		Board.Refresh();
 		Delay(1000);*/
 		

@@ -11,7 +11,7 @@ public class Screen {
 	private static Robot computer;
 
 	private static int boardWidth = 10;
-	private static int boardHeight = 21;
+	private static int boardHeight = 22;
 	
 	private static int inBetweenDelay = 5;
 	
@@ -115,16 +115,16 @@ public class Screen {
 			e.printStackTrace();
 		}
 		
-		Rectangle searchArea = new Rectangle(topLeft[0], topLeft[1], slope[1]*10, slope[0]*20);
+		Rectangle searchArea = new Rectangle(topLeft[0], topLeft[1], slope[0]*10, slope[1]*20);
 		BufferedImage screenshot = computer.createScreenCapture(searchArea);
 		
 		for (int x = 0; x < boardWidth; x++) {
 			for (int y = 1; y < 20; y++) {
-				if (screenshot.getRGB(x*slope[1], y*slope[0]) == -16777216) {
-					board[x][20-y] = 0;
+				if (screenshot.getRGB(x*slope[0], y*slope[1]) == -16777216) {
+					board[x][20-y-1] = 0;
 				}
 				else {
-					board[x][20-y] = 1;
+					board[x][20-y-1] = 1;
 				}
 			}
 		}

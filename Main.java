@@ -4,7 +4,7 @@ public class Main {
 	private static int depth = 1;
 	private static int poolSize = 1;
 	
-	private static int delay = 10;
+	private static int delay = 1000;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
@@ -18,7 +18,7 @@ public class Main {
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
 		
-		int[][] board = new int[10][21];
+		int[][] board = new int[10][22];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -28,13 +28,14 @@ public class Main {
 		Delay(10000000);*/
 		
 		/*boolean lmao = true;
+		Board.Init();
 		while (lmao) {
 			Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
 			Board.Refresh();
 			Delay(10);
 		}*/
 
-		Screen.SetBoardDimensions(10, 21);
+		Screen.SetBoardDimensions(10, 22);
 		Screen.FocusGame(gamePos, 20);
 		Screen.SetDelay(movementDelay);
 		
@@ -140,10 +141,10 @@ public class Main {
 		}
 	}
 	
-	/*private static void TestT(int y) {
+	private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
-		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -174,7 +175,7 @@ public class Main {
 		}
 	}
 	
-	private static void TestI(int y) {
+	/*private static void TestI(int y) {
 		int[] queue = new int[1];
 		queue[0] = 1;
 		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
