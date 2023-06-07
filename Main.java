@@ -4,7 +4,7 @@ public class Main {
 	private static int depth = 1;
 	private static int poolSize = 1;
 	
-	private static int delay = 1000;
+	private static int delay = 10;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
@@ -20,12 +20,12 @@ public class Main {
 		
 		int[][] board = new int[10][22];
 		
-		System.out.println("test");
+		/*System.out.println("test");
 		Board.Init();
 		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
 		TestL(15);
 		Board.Refresh();
-		Delay(10000000);
+		Delay(10000000);*/
 		
 		/*boolean lmao = true;
 		Board.Init();

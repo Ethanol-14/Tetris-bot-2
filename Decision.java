@@ -2,7 +2,7 @@ public class Decision {
 	private static final int hole = -40;
 	private static final int holeCover = -5;
 	private static final int bump = -3;
-	private static final int stackSize = -2;
+	private static final int stackSize = -4;
 	//private static final int well = -8;
 	private static final int[] clears = {0, -20, -10, 10, 40};
 	
@@ -534,7 +534,7 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		int yPos = 17;
+		int yPos = 18;
 		
 		while (!contact && yPos >= 0) {
 			
