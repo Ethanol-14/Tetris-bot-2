@@ -20,12 +20,12 @@ public class Main {
 		
 		int[][] board = new int[10][22];
 		
-		/*System.out.println("test");
+		System.out.println("test");
 		Board.Init();
 		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
-		TestT(15);
+		TestL(15);
 		Board.Refresh();
-		Delay(10000000);*/
+		Delay(10000000);
 		
 		/*boolean lmao = true;
 		Board.Init();
@@ -141,6 +141,154 @@ public class Main {
 		}
 	}
 	
+	private static void TestO(int y) {
+		int[] queue = new int[1];
+		queue[0] = 0;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		Board.EditBoard(4+finals[0], y, 1);
+		Board.EditBoard(4+finals[0]+1, y, 1);
+		Board.EditBoard(4+finals[0], y+1, 1);
+		Board.EditBoard(4+finals[0]+1, y+1, 1);
+	}
+	
+	private static void TestI(int y) {
+		int[] queue = new int[1];
+		queue[0] = 1;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		if (finals[1] == 0) { //horizontal
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+			Board.EditBoard(6+finals[0], y, 1);
+		}
+		else { //vertical
+			Board.EditBoard(5+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+2, 1);
+			Board.EditBoard(5+finals[0], y+3, 1);
+		}
+	}
+	
+	private static void TestS(int y) {
+		int[] queue = new int[1];
+		queue[0] = 2;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		if (finals[1] == 0) { //S
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+		}
+		else { //sideways S
+			Board.EditBoard(4+finals[0], y+2, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+		}
+	}
+	
+	private static void TestZ(int y) {
+		int[] queue = new int[1];
+		queue[0] = 3;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		if (finals[1] == 0) { //Z
+			Board.EditBoard(3+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+		}
+		else { //sideways Z
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+2, 1);
+		}
+	}
+	
+	private static void TestL(int y) {
+		int[] queue = new int[1];
+		queue[0] = 4;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		if (finals[1] == 0) { //L pointing left
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+		}
+		else if (finals[1] == 1) { //L
+			Board.EditBoard(4+finals[0], y+2, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+		}
+		else if (finals[1] == 2) { //L pointing right
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(3+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+		}
+		else { //L pointing down
+			Board.EditBoard(3+finals[0], y+2, 1);
+			Board.EditBoard(4+finals[0], y+2, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+		}
+	}
+	
+	private static void TestJ(int y) {
+		int[] queue = new int[1];
+		queue[0] = 5;
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		
+		System.out.println(finals[0]);
+		System.out.println(finals[1]);
+		
+		if (finals[1] == 0) { //J pointing right
+			Board.EditBoard(3+finals[0], y+1, 1);
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+		}
+		else if (finals[1] == 1) { //J pointing down
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y+2, 1);
+			Board.EditBoard(5+finals[0], y+2, 1);
+		}
+		else if (finals[1] == 2) { //J pointing left
+			Board.EditBoard(3+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y+1, 1);
+			Board.EditBoard(5+finals[0], y, 1);
+		}
+		else { //J
+			Board.EditBoard(3+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y, 1);
+			Board.EditBoard(4+finals[0], y+1, 1);
+			Board.EditBoard(4+finals[0], y+2, 1);
+		}
+	}
+	
 	private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
@@ -174,26 +322,4 @@ public class Main {
 			Board.EditBoard(4+finals[0], y+2, 1);
 		}
 	}
-	
-	/*private static void TestI(int y) {
-		int[] queue = new int[1];
-		queue[0] = 1;
-		short[] finals = Decision.FindBestPlacement(queue, 0, Board.GetBoard());
-		
-		System.out.println(finals[0]);
-		System.out.println(finals[1]);
-		
-		if (finals[1] == 0) { //horizontal
-			Board.EditBoard(3+finals[0], y, 1);
-			Board.EditBoard(4+finals[0], y, 1);
-			Board.EditBoard(5+finals[0], y, 1);
-			Board.EditBoard(6+finals[0], y, 1);
-		}
-		else { //vertical
-			Board.EditBoard(5+finals[0], y, 1);
-			Board.EditBoard(5+finals[0], y+1, 1);
-			Board.EditBoard(5+finals[0], y+2, 1);
-			Board.EditBoard(5+finals[0], y+3, 1);
-		}
-	}*/
 }

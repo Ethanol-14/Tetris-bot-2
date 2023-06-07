@@ -1,6 +1,6 @@
 public class Decision {
 	private static final int hole = -40;
-	private static final int holeCover = -10;
+	private static final int holeCover = -5;
 	private static final int bump = -3;
 	private static final int stackSize = -2;
 	//private static final int well = -8;
