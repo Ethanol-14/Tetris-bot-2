@@ -4,7 +4,7 @@ public class Main {
 	private static int depth = 1;
 	private static int poolSize = 1;
 	
-	private static int delay = 10;
+	private static int delay = 0;
 	private static int movementDelay = 10;
 	
 	private static int[] queue = new int[depth];
@@ -18,7 +18,7 @@ public class Main {
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
 		
-		int[][] board = new int[10][22];
+		int[][] board = new int[10][21];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -35,7 +35,7 @@ public class Main {
 			Delay(10);
 		}*/
 
-		Screen.SetBoardDimensions(10, 22);
+		Screen.SetBoardDimensions(10, 21);
 		Screen.FocusGame(gamePos, 20);
 		Screen.SetDelay(movementDelay);
 		
@@ -61,7 +61,7 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, board), movementDelay, false);
+				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, board).GetMovementAndScore(), movementDelay, false);
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}
@@ -144,7 +144,7 @@ public class Main {
 	private static void TestO(int y) {
 		int[] queue = new int[1];
 		queue[0] = 0;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -158,7 +158,7 @@ public class Main {
 	private static void TestI(int y) {
 		int[] queue = new int[1];
 		queue[0] = 1;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -180,7 +180,7 @@ public class Main {
 	private static void TestS(int y) {
 		int[] queue = new int[1];
 		queue[0] = 2;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -202,7 +202,7 @@ public class Main {
 	private static void TestZ(int y) {
 		int[] queue = new int[1];
 		queue[0] = 3;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -224,7 +224,7 @@ public class Main {
 	private static void TestL(int y) {
 		int[] queue = new int[1];
 		queue[0] = 4;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -258,7 +258,7 @@ public class Main {
 	private static void TestJ(int y) {
 		int[] queue = new int[1];
 		queue[0] = 5;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);
@@ -292,7 +292,7 @@ public class Main {
 	private static void TestT(int y) {
 		int[] queue = new int[1];
 		queue[0] = 6;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard());
+		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
 		
 		System.out.println(finals[0]);
 		System.out.println(finals[1]);

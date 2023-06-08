@@ -1,34 +1,52 @@
 public class Decision {
-	private static final int hole = -40;
-	private static final int holeCover = -5;
-	private static final int bump = -3;
+	private static final int hole = -80;
+	private static final int holeCover = -10;
+	private static final int bump = -6;
 	private static final int stackSize = -4;
+	private static final int stackSizeSquared = -1;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -20, -10, 10, 40};
+	private static final int[] clears = {0, -40, -20, 20, 40};
 	
-	public static int[] FindBestPlacement(int[] queue, int poolSize, int[][] board) {
+	public static Boardstate FindBestPlacement(int[] queue, int poolSize, int[][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
 
-		int lowestCostIndex = 0;
+		int highscoreIndex = 0;
 
 		Boardstate[] fields = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
 			for (int i = 1; i < fields.length; i++) {
-				if (fields[i].GetScore() > fields[lowestCostIndex].GetScore()) {
-					lowestCostIndex = i;
+				if (fields[i].GetScore() > fields[highscoreIndex].GetScore()) {
+					highscoreIndex = i;
 				}
 			}
-			System.out.println(fields[lowestCostIndex].GetScore());
-			return fields[lowestCostIndex].GetMovementAndScore();
+			//System.out.println(fields[lowestCostIndex].GetScore());
+			return fields[highscoreIndex];
 		}
 		else {
+			//take out first queue piece cause you placed it
+			int[] updatedQueue = new int[queue.length-1];
 			
+			for (int i = 0; i < updatedQueue.length; i++) {
+				updatedQueue[i] = queue[i+1];
+			}
+			
+			for (int i = 0; i < fields.length; i++) {
+				//fields[i].SetScore(FindBestPlacement(updatedQueue, 1, fields[i].GetBoard())[2]);
+				fields[i] = FindBestPlacement(updatedQueue, 1, fields[i].GetBoard());
+			}
+			
+			for (int i = 1; i < fields.length; i++) {
+				if (fields[i].GetScore() > fields[highscoreIndex].GetScore()) {
+					highscoreIndex = i;
+				}
+			}
+			
+			return fields[highscoreIndex];
 		}
-		
-		return null;
+		//return null;
 	}
 			
 	private static Boardstate[] TestCombinations(int piece, int[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
@@ -534,7 +552,7 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		int yPos = 18;
+		int yPos = 17;
 		
 		while (!contact && yPos >= 0) {
 			
@@ -592,6 +610,7 @@ public class Decision {
 		}
 		
 		field.ChangeScore(rank*stackSize);
+		field.ChangeScore(rank*rank*stackSizeSquared);
 		field.ChangeScore(clears[linesCleared]);
 		
 		//Hole costs

@@ -3,7 +3,7 @@ public class Boardstate {
 	private int piece = 0;
 	private int[][] pieceData = new int[4][2];
 	private int[] movementAndScore = new int[3];
-	private int[][] board = new int[10][22];
+	private int[][] board = new int[10][21];
 	
 	//object declaration
 	public Boardstate() {}
@@ -51,6 +51,10 @@ public class Boardstate {
 	public void SetMovement(int _displacement, int _rotation) {
 		movementAndScore[0] = _displacement;
 		movementAndScore[1] = _rotation;
+	}
+	
+	public void SetScore(int _score) {
+		movementAndScore[2] = _score;
 	}
 	
 	public void ChangeScore(int _changeInScore) {

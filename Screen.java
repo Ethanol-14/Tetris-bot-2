@@ -11,7 +11,7 @@ public class Screen {
 	private static Robot computer;
 
 	private static int boardWidth = 10;
-	private static int boardHeight = 22;
+	private static int boardHeight = 21;
 	
 	private static int inBetweenDelay = 5;
 	
