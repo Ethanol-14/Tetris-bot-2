@@ -103,10 +103,10 @@ public class Screen {
 		computer.keyRelease(KeyEvent.VK_SPACE);
 	}
 	
-	public static int[][] DetermineBoardData(int[] topLeft, int[] slope) {
+	public static byte[][] DetermineBoardData(int[] topLeft, int[] slope) {
 		//long startTime = System.currentTimeMillis();
 		
-		int[][] board = new int[boardWidth][boardHeight];
+		byte[][] board = new byte[boardWidth][boardHeight];
 		
 		try {
 			computer = new Robot();

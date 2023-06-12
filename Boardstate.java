@@ -3,7 +3,7 @@ public class Boardstate {
 	private int piece = 0;
 	private int[][] pieceData = new int[4][2];
 	private int[] movementAndScore = new int[3];
-	private int[][] board = new int[10][21];
+	private byte[][] board = new byte[10][21];
 	
 	//object declaration
 	public Boardstate() {}
@@ -24,7 +24,7 @@ public class Boardstate {
 		return movementAndScore[2];
 	}
 	
-	public int[][] GetBoard() {
+	public byte[][] GetBoard() {
 		return board;
 	}
 	
@@ -61,7 +61,7 @@ public class Boardstate {
 		movementAndScore[2] += _changeInScore;
 	}
 	
-	public void SetBoard(int[][] _board) {
+	public void SetBoard(byte[][] _board) {
 		for (int x = 0; x < _board.length; x++) {
 			for (int y = 0; y < _board[0].length; y++) {
 				board[x][y] = _board[x][y];
@@ -69,7 +69,7 @@ public class Boardstate {
 		}
 	}
 	
-	public void SetBoard(int x, int y, int value) {
+	public void SetBoard(int x, int y, byte value) {
 		board[x][y] = value;
 	}
 	

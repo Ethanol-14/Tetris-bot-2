@@ -2,12 +2,12 @@ public class Decision {
 	private static final int hole = -80;
 	private static final int holeCover = -10;
 	private static final int bump = -6;
-	private static final int stackSize = -4;
-	private static final int stackSizeSquared = -1;
+	private static final int stackSize = -3;
+	private static final int stackSizeSquared = -3;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -40, -20, 20, 40};
+	private static final int[] clears = {0, -70, -50, 20, 40};
 	
-	public static Boardstate FindBestPlacement(int[] queue, int poolSize, int[][] board) {
+	public static Boardstate FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
@@ -49,7 +49,7 @@ public class Decision {
 		//return null;
 	}
 			
-	private static Boardstate[] TestCombinations(int piece, int[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
+	private static Boardstate[] TestCombinations(int piece, byte[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		int i = 0;
 		
@@ -552,7 +552,7 @@ public class Decision {
 		
 		//Drop piece
 		boolean contact = false;
-		int yPos = 17;
+		int yPos = 16;
 		
 		while (!contact && yPos >= 0) {
 			
@@ -574,7 +574,7 @@ public class Decision {
 		
 		//Update board to contain dropped piece
 		for (int mino = 0; mino < 4; mino++) {
-			field.SetBoard(field.GetPieceData(mino, 0), field.GetPieceData(mino, 1)+yPos, 1);
+			field.SetBoard(field.GetPieceData(mino, 0), field.GetPieceData(mino, 1)+yPos, (byte) 1);
 		}
 		
 		//Clear lines
@@ -593,14 +593,14 @@ public class Decision {
 
 				for (int y2 = rank; y2 < 18; y2++) {
 					for (int x = 0; x < 10; x++) {
-						field.SetBoard(x, y2, 0);
+						field.SetBoard(x, y2, (byte) 0);
 					}
 				}
 				break;
 			}
 			else if (sum != 10) {
 				for (int x = 0; x < 10; x++) {
-					field.SetBoard(x, rank, field.GetBoard(x, y));
+					field.SetBoard(x, rank, (byte) field.GetBoard(x, y));
 				}
 				rank++;
 			}

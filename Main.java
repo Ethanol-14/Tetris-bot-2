@@ -5,12 +5,13 @@ public class Main {
 	private static int poolSize = 1;
 	
 	private static int delay = 0;
-	private static int movementDelay = 10;
-	
+	private static int movementDelay = 5;
+
 	private static int[] queue = new int[depth];
+	private static int[] holdQueue = new int[depth];
 	private static int[] topLeft = new int[2];
 	private static int[] slope = new int[2];
-	private static int[][] piecePos = new int[depth][2];
+	private static int[][] piecePos = new int[depth+1][2];
 	private static int[] gamePos = new int[2];
 	private static int[] pieceColors = new int[7];
 	private static int[] queuePieceColors = new int[7];
@@ -18,7 +19,7 @@ public class Main {
 	public static void main (String[] args) {
 		configureForJstrisOnSchoolComputer();
 		
-		int[][] board = new int[10][21];
+		byte[][] board = new byte[10][21];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -34,18 +35,32 @@ public class Main {
 			Board.Refresh();
 			Delay(10);
 		}*/
+		
+		/*boolean lmao = true;
+		while (lmao) {
+			System.out.println(Screen.DeterminePiece(piecePos[1][0], piecePos[1][1], queuePieceColors));
+			Delay(10);
+		}*/
 
 		Screen.SetBoardDimensions(10, 21);
 		Screen.FocusGame(gamePos, 20);
 		Screen.SetDelay(movementDelay);
 		
 		int failCount = 0;
+		int piece = 0;
+		int[] path = new int[3];
+		int[] queuePath = new int[3];
 		
 		while (true) {
 			board = Screen.DetermineBoardData(topLeft, slope);
 			
-			for (int x = 0; x < queue.length; x++) {
-				queue[x] = Screen.DeterminePiece(piecePos[x][0], piecePos[x][1], pieceColors);
+			queue[0] = Screen.DeterminePiece(piecePos[0][0], piecePos[0][1], pieceColors);
+			holdQueue[0] = Screen.DeterminePiece(piecePos[1][0], piecePos[1][1], queuePieceColors);
+			for (int x = 1; x < queue.length; x++) {
+				piece = Screen.DeterminePiece(piecePos[x+2][0], piecePos[x+2][1], queuePieceColors);
+				
+				queue[x] = piece;
+				holdQueue[x] = piece;
 			}
 
 			//board.refresh();
@@ -61,7 +76,15 @@ public class Main {
 				}
 			}
 			else {
-				Screen.OutputMovement(Decision.FindBestPlacement(queue, poolSize, board).GetMovementAndScore(), movementDelay, false);
+				path = Decision.FindBestPlacement(queue, poolSize, board).GetMovementAndScore();
+				queuePath = Decision.FindBestPlacement(holdQueue, poolSize, board).GetMovementAndScore();
+				
+				if (path[2] >= queuePath[2]) {
+					Screen.OutputMovement(path, movementDelay, false);
+				}
+				else {
+					Screen.OutputMovement(queuePath, movementDelay, true);
+				}
 			}
 			Delay(10); //allow time for the screen itself to refresh
 		}
@@ -75,6 +98,7 @@ public class Main {
 		slope[1] = 24;
 		piecePos[0][0] = 1018;
 		piecePos[0][1] = 217;
+		
 		gamePos[0] = 1000;
 		gamePos[1] = 400;
 		
@@ -107,12 +131,14 @@ public class Main {
 		slope[1] = 24;
 		piecePos[0][0] = 697;
 		piecePos[0][1] = 185;
+		piecePos[1][0] = 522;
+		piecePos[1][1] = 233;
 		gamePos[0] = 800;
 		gamePos[1] = 400;
 		
-		for (int x = 1; x < piecePos.length; x++) {
-			piecePos[x][0] = 0;
-			piecePos[x][1] = 0;
+		for (int x = 2; x < piecePos.length; x++) {
+			piecePos[x][0] = 897;
+			piecePos[x][1] = 232 + (72*(x-2));
 		}
 		
 		pieceColors[0] = 159;
@@ -141,7 +167,7 @@ public class Main {
 		}
 	}
 	
-	private static void TestO(int y) {
+	/*private static void TestO(int y) {
 		int[] queue = new int[1];
 		queue[0] = 0;
 		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
@@ -321,5 +347,5 @@ public class Main {
 			Board.EditBoard(4+finals[0], y+1, 1);
 			Board.EditBoard(4+finals[0], y+2, 1);
 		}
-	}
+	}*/
 }
