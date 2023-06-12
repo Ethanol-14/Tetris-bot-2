@@ -1,15 +1,13 @@
 # Tetris-bot-2
-Now it tries to go for tetrises instead of just clearing lines  
-(This comes with the lovely added problem of the bot greeding, making holes and then dying)  
-
-SIGNIFICANTLY BETTER than Tetris bot  
-
-Tetris bot 2 is able to achieve roughly the same stacking quality as tetris bot 1  
-Except it doesn't need to hold to do so  
-Which is way better because holding makes your life way easier but this bot can kind of manage without it  
-(Although, that's not saying much, since the stacking quality of tetris bot 1 is total shit)  
-Just wait till it gets previews :)  
-The cost function is also more sophisticated  
+The branch is for the new way the algorithm will be working  
+Changes to be made:  
+-Boardstate is stored as an object, not a 2D array to allow for more sophisticated things like having piece movement and score all in one datatype  
+-Cost is now score, so that bad things have negative values and good things have positive values, just makes things simpler  
+-Holes will be calculated for in a better way, not that I know what way that is yet  
+-Wells will probably not be calculated anymore, due to the algorithm covering them up cause of how painful it is to have a well  
+-Lookahead will actually be implemented  
+-More weights inspired from coldclear will be added such as the genius scoring based on number of lines cleared and scoreing based on board height  
+-The algorithm will screenshot a larger window as to find board, hold, current, and queue all in one go  
 
 Anyways here's some good ol reliable values that worked well for korea stacking  
 private static final int hole = -80;  
