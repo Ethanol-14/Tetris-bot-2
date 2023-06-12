@@ -12,10 +12,9 @@ Just wait till it gets previews :)
 The cost function is also more sophisticated  
 
 Anyways here's some good ol reliable values that worked well for korea stacking  
-private static short holeCost = 30;  
-private static short holeSeverity = 10;  
-private static short holeCostDecayRate = 3;  
-private static short bumpCost = 3;  
-private static short lowCost = 2;  
-private static short wellCost = 8;  
-private static short lineClearReward = 8;  
+private static final int hole = -80;  
+private static final int holeCover = -10;  
+private static final int bump = -6;  
+private static final int stackSize = -3;  
+private static final int stackSizeSquared = -3;  
+private static final int[] clears = {0, -70, -50, 20, 40};  
