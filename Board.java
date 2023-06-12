@@ -8,17 +8,20 @@ import javax.swing.JPanel;
 import java.util.Random;
 
 public class Board extends JPanel { //this class is really just for basic board visualization
+
+	private static final long serialVersionUID = -7326512691602942406L;
+	
 	private static JFrame frame = new JFrame("Block solution");
 	private static JPanel panel = new Board();
 	
-	private static byte[][] board = new byte[10][25];
+	private static byte[][] board = new byte[10][21];
 	
 	public static byte[][] GetBoard() {
 		return board;
 	}
 	
-	public static void EditBoard(int x, int y, int value) {
-		board[x][y] = (byte)(value);
+	public static void EditBoard(int x, int y, byte value) {
+		board[x][y] = value;
 	}
 	
 	public static void SetBoardDimensions(int width, int height) {
@@ -46,7 +49,7 @@ public class Board extends JPanel { //this class is really just for basic board 
 		//randomize board's first layer of squares
 		for (int j = 0; j < layers; j++) {
 			for (int i = 0; i < board.length; i++) {
-				board[i][j] = (byte)randomInt.nextInt(2);
+				board[i][j] = (byte) randomInt.nextInt(2);
 			}
 		}
 	}
