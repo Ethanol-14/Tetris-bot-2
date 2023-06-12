@@ -8,3 +8,11 @@ Changes to be made:
 -Lookahead will actually be implemented  
 -More weights inspired from coldclear will be added such as the genius scoring based on number of lines cleared and scoreing based on board height  
 -The algorithm will screenshot a larger window as to find board, hold, current, and queue all in one go  
+
+Anyways here's some good ol reliable values that worked well for korea stacking  
+private static final int hole = -80;  
+private static final int holeCover = -10;  
+private static final int bump = -6;  
+private static final int stackSize = -3;  
+private static final int stackSizeSquared = -3;  
+private static final int[] clears = {0, -70, -50, 20, 40};  
