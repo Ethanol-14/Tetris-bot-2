@@ -1,9 +1,9 @@
 public class Main {
 	
 	//Parameters
-	private static int depth = 2;
+	private static int depth = 1;
 	
-	private static int delay = 5000;
+	private static int delay = 1000;
 	private static int movementDelay = 10;
 
 	private static int[] queue = new int[depth];
@@ -16,7 +16,7 @@ public class Main {
 	private static int[] queuePieceColors = new int[7];
 	
 	public static void main (String[] args) {
-		configureForJstrisOnSchoolComputer();
+		configureForJstris();
 		
 		byte[][] board = new byte[10][21];
 		
@@ -97,13 +97,14 @@ public class Main {
 		slope[1] = 24;
 		piecePos[0][0] = 1018;
 		piecePos[0][1] = 217;
-		
+		piecePos[1][0] = 842;
+		piecePos[1][1] = 266;
 		gamePos[0] = 1000;
 		gamePos[1] = 400;
 		
-		for (int x = 1; x < piecePos.length; x++) {
-			piecePos[x][0] = 0;
-			piecePos[x][1] = 0;
+		for (int x = 2; x < piecePos.length; x++) {
+			piecePos[x][0] = 897;
+			piecePos[x][1] = 232 + (72*(x-2));
 		}
 		
 		pieceColors[0] = 159;
