@@ -1,11 +1,10 @@
 public class Main {
 	
 	//Parameters
-	private static int depth = 1;
-	private static int poolSize = 1;
+	private static int depth = 2;
 	
-	private static int delay = 0;
-	private static int movementDelay = 5;
+	private static int delay = 5000;
+	private static int movementDelay = 10;
 
 	private static int[] queue = new int[depth];
 	private static int[] holdQueue = new int[depth];
@@ -56,11 +55,11 @@ public class Main {
 			
 			queue[0] = Screen.DeterminePiece(piecePos[0][0], piecePos[0][1], pieceColors);
 			holdQueue[0] = Screen.DeterminePiece(piecePos[1][0], piecePos[1][1], queuePieceColors);
-			for (int x = 1; x < queue.length; x++) {
+			for (int x = 0; x < depth-1; x++) {
 				piece = Screen.DeterminePiece(piecePos[x+2][0], piecePos[x+2][1], queuePieceColors);
 				
-				queue[x] = piece;
-				holdQueue[x] = piece;
+				queue[x+1] = piece;
+				holdQueue[x+1] = piece;
 			}
 
 			//board.refresh();
@@ -76,8 +75,8 @@ public class Main {
 				}
 			}
 			else {
-				path = Decision.FindBestPlacement(queue, poolSize, board).GetMovementAndScore();
-				queuePath = Decision.FindBestPlacement(holdQueue, poolSize, board).GetMovementAndScore();
+				path = Decision.FindBestPlacement(queue, board).GetMovementAndScore();
+				queuePath = Decision.FindBestPlacement(holdQueue, board).GetMovementAndScore();
 				
 				if (path[2] >= queuePath[2]) {
 					Screen.OutputMovement(path, movementDelay, false);

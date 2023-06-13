@@ -7,7 +7,9 @@ public class Decision {
 	//private static final int well = -8;
 	private static final int[] clears = {0, -70, -50, 20, 40};
 	
-	public static Boardstate FindBestPlacement(int[] queue, int poolSize, byte[][] board) {
+	private static int count = 0;
+	
+	public static Boardstate FindBestPlacement(int[] queue, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
@@ -35,7 +37,7 @@ public class Decision {
 			
 			for (int i = 0; i < fields.length; i++) {
 				//fields[i].SetScore(FindBestPlacement(updatedQueue, 1, fields[i].GetBoard())[2]);
-				fields[i] = FindBestPlacement(updatedQueue, 1, fields[i].GetBoard());
+				fields[i] = FindBestPlacement(updatedQueue, fields[i].GetBoard());
 			}
 			
 			for (int i = 1; i < fields.length; i++) {
@@ -542,7 +544,8 @@ public class Decision {
 	}
 
 	private static Boardstate CalculateCost(Boardstate field) {
-		
+		System.out.println(count);
+		count++;
 		/*byte[][] board = new byte[10][25];
 		for (int x = 0; x < originalBoard.length; x++) { //might need to bring this back due to java's default referencing... hopefully not tho
 			for (int y = 0; y < originalBoard[0].length; y++) {
