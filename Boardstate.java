@@ -8,6 +8,23 @@ public class Boardstate {
 	//object declaration
 	public Boardstate() {}
 	
+	//other object declaration
+	/*public Boardstate(Boardstate field) {
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 2; y++) {
+				pieceData[x][y] = field.GetPieceData(x, y);
+			}
+		}
+		for (int i = 0; i < 3; i++) {
+			movementAndScore[i] = field.GetMovementAndScore(i);
+		}
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[0].length; y++) {
+				board[x][y] = (byte) field.GetBoard(x, y);
+			}
+		}
+	}*/
+	
 	public int GetPiece() {
 		return piece;
 	}
@@ -36,6 +53,10 @@ public class Boardstate {
 		return movementAndScore;
 	}
 	
+	public int GetMovementAndScore(int i) {
+		return movementAndScore[i];
+	}
+	
 	public void SetPiece(int _piece) {
 		piece = _piece;
 	}
@@ -62,8 +83,8 @@ public class Boardstate {
 	}
 	
 	public void SetBoard(byte[][] _board) {
-		for (int x = 0; x < _board.length; x++) {
-			for (int y = 0; y < _board[0].length; y++) {
+		for (int x = 0; x < board.length; x++) {
+			for (int y = 0; y < board[0].length; y++) {
 				board[x][y] = _board[x][y];
 			}
 		}

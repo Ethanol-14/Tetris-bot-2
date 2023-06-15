@@ -1,9 +1,9 @@
 public class Main {
 	
 	//Parameters
-	private static int depth = 1;
+	private static int depth = 4;
 	
-	private static int delay = 1000;
+	private static int delay = 10;
 	private static int movementDelay = 10;
 
 	private static int[] queue = new int[depth];
@@ -23,7 +23,7 @@ public class Main {
 		/*System.out.println("test");
 		Board.Init();
 		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
-		TestL(15);
+		TestTwo(6, 6, 15);
 		Board.Refresh();
 		Delay(10000000);*/
 		
@@ -103,8 +103,8 @@ public class Main {
 		gamePos[1] = 400;
 		
 		for (int x = 2; x < piecePos.length; x++) {
-			piecePos[x][0] = 897;
-			piecePos[x][1] = 232 + (72*(x-2));
+			piecePos[x][0] = 1219;
+			piecePos[x][1] = 266 + (72*(x-2));
 		}
 		
 		pieceColors[0] = 159;
@@ -167,21 +167,43 @@ public class Main {
 		}
 	}
 	
-	/*private static void TestO(int y) {
-		int[] queue = new int[1];
-		queue[0] = 0;
-		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();
-		
-		System.out.println(finals[0]);
-		System.out.println(finals[1]);
-		
-		Board.EditBoard(4+finals[0], y, 1);
-		Board.EditBoard(4+finals[0]+1, y, 1);
-		Board.EditBoard(4+finals[0], y+1, 1);
-		Board.EditBoard(4+finals[0]+1, y+1, 1);
+	private static void printPieceName(int piece) {
+		if (piece == 0) {
+			System.out.println("O piece");
+		}
+		else if (piece == 1) {
+			System.out.println("I piece");
+		}
+		else if (piece == 2) {
+			System.out.println("S piece");
+		}
+		else if (piece == 3) {
+			System.out.println("Z piece");
+		}
+		else if (piece == 4) {
+			System.out.println("L piece");
+		}
+		else if (piece == 5) {
+			System.out.println("J piece");
+		}
+		else if (piece == 6) {
+			System.out.println("T piece");
+		}
+		else {
+			System.out.println("that ain't a piece");
+		}
 	}
 	
-	private static void TestI(int y) {
+	private static void Test(int[] queue, int y1) {
+		Boardstate result = Decision.FindBestPlacement(queue, Board.GetBoard());
+		
+		Board.EditBoard(result.GetPieceData()[0][0], result.GetPieceData()[0][1]+y1, (byte) 1);
+		Board.EditBoard(result.GetPieceData()[1][0], result.GetPieceData()[1][1]+y1, (byte) 1);
+		Board.EditBoard(result.GetPieceData()[2][0], result.GetPieceData()[2][1]+y1, (byte) 1);
+		Board.EditBoard(result.GetPieceData()[3][0], result.GetPieceData()[3][1]+y1, (byte) 1);
+	}
+	
+	/*private static void TestI(int y) {
 		int[] queue = new int[1];
 		queue[0] = 1;
 		int[] finals = Decision.FindBestPlacement(queue, 1, Board.GetBoard()).GetMovementAndScore();

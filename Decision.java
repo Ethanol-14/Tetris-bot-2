@@ -5,9 +5,7 @@ public class Decision {
 	private static final int stackSize = -3;
 	private static final int stackSizeSquared = -3;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -70, -50, 20, 40};
-	
-	private static int count = 0;
+	private static final int[] clears = {0, -70, -50, -20, 40};
 	
 	public static Boardstate FindBestPlacement(int[] queue, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
@@ -16,6 +14,7 @@ public class Decision {
 
 		int highscoreIndex = 0;
 
+		System.out.println(queue.length);
 		Boardstate[] fields = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
@@ -36,8 +35,9 @@ public class Decision {
 			}
 			
 			for (int i = 0; i < fields.length; i++) {
-				//fields[i].SetScore(FindBestPlacement(updatedQueue, 1, fields[i].GetBoard())[2]);
-				fields[i] = FindBestPlacement(updatedQueue, fields[i].GetBoard());
+				Boardstate tempField = FindBestPlacement(updatedQueue, fields[i].GetBoard());
+				fields[i].ChangeScore(tempField.GetScore());
+				fields[i].SetBoard(tempField.GetBoard());
 			}
 			
 			for (int i = 1; i < fields.length; i++) {
@@ -544,8 +544,6 @@ public class Decision {
 	}
 
 	private static Boardstate CalculateCost(Boardstate field) {
-		System.out.println(count);
-		count++;
 		/*byte[][] board = new byte[10][25];
 		for (int x = 0; x < originalBoard.length; x++) { //might need to bring this back due to java's default referencing... hopefully not tho
 			for (int y = 0; y < originalBoard[0].length; y++) {
