@@ -7,7 +7,7 @@ public class Decision {
 	//private static final int well = -8;
 	private static final int[] clears = {0, -50, -30, 10, 40};
 	
-	public static Boardstate FindBestPlacement(int[] queue, byte[][] board) {
+	public static Boardstate FindBestPlacement(int[] queue, int [][] board) {
 		//the queue is an integer array that represents the piece queue
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
@@ -22,7 +22,6 @@ public class Decision {
 					highscoreIndex = i;
 				}
 			}
-			//System.out.println(fields[lowestCostIndex].GetScore());
 			return fields[highscoreIndex];
 		}
 		else {
@@ -47,10 +46,9 @@ public class Decision {
 			
 			return fields[highscoreIndex];
 		}
-		//return null;
 	}
 			
-	private static Boardstate[] TestCombinations(int piece, byte[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
+	private static Boardstate[] TestCombinations(int piece, int[][] board) { //the returned 2D array will have its first set of indices for the placement number, and the second set of indices for the piece position data
 		
 		int i = 0;
 		
@@ -543,12 +541,6 @@ public class Decision {
 	}
 
 	private static Boardstate CalculateCost(Boardstate field) {
-		/*byte[][] board = new byte[10][25];
-		for (int x = 0; x < originalBoard.length; x++) { //might need to bring this back due to java's default referencing... hopefully not tho
-			for (int y = 0; y < originalBoard[0].length; y++) {
-				board[x][y] = originalBoard[x][y];
-			}
-		}*/
 		
 		//Drop piece
 		boolean contact = false;
@@ -574,7 +566,7 @@ public class Decision {
 		
 		//Update board to contain dropped piece
 		for (int mino = 0; mino < 4; mino++) {
-			field.SetBoard(field.GetPieceData(mino, 0), field.GetPieceData(mino, 1)+yPos, (byte) 1);
+			field.SetBoard(field.GetPieceData(mino, 0), field.GetPieceData(mino, 1)+yPos, 1);
 		}
 		
 		//Clear lines
@@ -593,14 +585,14 @@ public class Decision {
 
 				for (int y2 = rank; y2 < 18; y2++) {
 					for (int x = 0; x < 10; x++) {
-						field.SetBoard(x, y2, (byte) 0);
+						field.SetBoard(x, y2, 0);
 					}
 				}
 				break;
 			}
 			else if (sum != 10) {
 				for (int x = 0; x < 10; x++) {
-					field.SetBoard(x, rank, (byte) field.GetBoard(x, y));
+					field.SetBoard(x, rank, field.GetBoard(x, y));
 				}
 				rank++;
 			}
@@ -649,6 +641,7 @@ public class Decision {
 		}
 		
 		System.out.println(yLevel);
+		
 		//int tempbumpcount=0;
 		for (int x = 1; x < 10; x++) {
 			if (field.GetBoard(x, yLevel) == 1) { //we need to search up

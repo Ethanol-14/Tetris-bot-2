@@ -1,7 +1,7 @@
 public class Main {
 	
 	//Parameters
-	private static int depth = 3;
+	private static int depth = 4;
 	
 	private static int delay = 10;
 	private static int movementDelay = 10;
@@ -18,7 +18,7 @@ public class Main {
 	public static void main (String[] args) {
 		configureForJstris();
 		
-		byte[][] board = new byte[10][21];
+		int[][] board = new int[10][21];
 		
 		/*System.out.println("test");
 		Board.Init();
@@ -197,10 +197,10 @@ public class Main {
 	private static void Test(int[] queue, int y1) {
 		Boardstate result = Decision.FindBestPlacement(queue, Board.GetBoard());
 		
-		Board.EditBoard(result.GetPieceData()[0][0], result.GetPieceData()[0][1]+y1, (byte) 1);
-		Board.EditBoard(result.GetPieceData()[1][0], result.GetPieceData()[1][1]+y1, (byte) 1);
-		Board.EditBoard(result.GetPieceData()[2][0], result.GetPieceData()[2][1]+y1, (byte) 1);
-		Board.EditBoard(result.GetPieceData()[3][0], result.GetPieceData()[3][1]+y1, (byte) 1);
+		Board.EditBoard(result.GetPieceData()[0][0], result.GetPieceData()[0][1]+y1, 1);
+		Board.EditBoard(result.GetPieceData()[1][0], result.GetPieceData()[1][1]+y1, 1);
+		Board.EditBoard(result.GetPieceData()[2][0], result.GetPieceData()[2][1]+y1, 1);
+		Board.EditBoard(result.GetPieceData()[3][0], result.GetPieceData()[3][1]+y1, 1);
 	}
 	
 	/*private static void TestI(int y) {
