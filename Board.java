@@ -14,18 +14,18 @@ public class Board extends JPanel { //this class is really just for basic board 
 	private static JFrame frame = new JFrame("Block solution");
 	private static JPanel panel = new Board();
 	
-	private static byte[][] board = new byte[10][21];
+	private static int[][] board = new int[10][21];
 	
-	public static byte[][] GetBoard() {
+	public static int[][] GetBoard() {
 		return board;
 	}
 	
-	public static void EditBoard(int x, int y, byte value) {
+	public static void EditBoard(int x, int y, int value) {
 		board[x][y] = value;
 	}
 	
 	public static void SetBoardDimensions(int width, int height) {
-		board = new byte[width][height];
+		board = new int[width][height];
 	}
 	
 	public static void Init() {		
@@ -49,12 +49,12 @@ public class Board extends JPanel { //this class is really just for basic board 
 		//randomize board's first layer of squares
 		for (int j = 0; j < layers; j++) {
 			for (int i = 0; i < board.length; i++) {
-				board[i][j] = (byte) randomInt.nextInt(2);
+				board[i][j] = randomInt.nextInt(2);
 			}
 		}
 	}
 	
-	public static void Setboard(byte[][] _board) {
+	public static void Setboard(int[][] _board) {
 		board = _board;
 	}
 	
