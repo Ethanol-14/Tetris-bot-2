@@ -1,7 +1,7 @@
 public class Main {
 	
 	//Parameters
-	private static int depth = 4;
+	private static int depth = 3;
 	
 	private static int delay = 10;
 	private static int movementDelay = 10;

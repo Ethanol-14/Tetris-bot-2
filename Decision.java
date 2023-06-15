@@ -3,9 +3,9 @@ public class Decision {
 	private static final int holeCover = -10;
 	private static final int bump = -6;
 	private static final int stackSize = -3;
-	private static final int stackSizeSquared = -3;
+	private static final int stackSizeSquared = -4;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -70, -50, -20, 40};
+	private static final int[] clears = {0, -70, -50, -10, 40};
 	
 	public static Boardstate FindBestPlacement(int[] queue, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
@@ -13,8 +13,7 @@ public class Decision {
 		//board is a 2D array of 0s and 1s that represent the board state
 
 		int highscoreIndex = 0;
-
-		System.out.println(queue.length);
+		
 		Boardstate[] fields = TestCombinations(queue[0], board);
 		
 		if (queue.length == 1) {
@@ -649,6 +648,7 @@ public class Decision {
 			}
 		}
 		
+		System.out.println(yLevel);
 		//int tempbumpcount=0;
 		for (int x = 1; x < 10; x++) {
 			if (field.GetBoard(x, yLevel) == 1) { //we need to search up
