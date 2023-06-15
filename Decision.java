@@ -5,7 +5,7 @@ public class Decision {
 	private static final int stackSize = -3;
 	private static final int stackSizeSquared = -4;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -70, -50, -10, 40};
+	private static final int[] clears = {0, -50, -30, 10, 40};
 	
 	public static Boardstate FindBestPlacement(int[] queue, byte[][] board) {
 		//the queue is an integer array that represents the piece queue
