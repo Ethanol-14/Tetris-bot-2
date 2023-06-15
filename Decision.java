@@ -12,7 +12,7 @@ public class Decision {
 		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
 		//board is a 2D array of 0s and 1s that represent the board state
 
-		int highscoreIndex = 0;
+		int highscoreIndex = 1;
 		
 		Boardstate[] fields = TestCombinations(queue[0], board);
 		
@@ -633,14 +633,12 @@ public class Decision {
 		
 		//Board flatness (or rather, bumpiness)
 		int yLevel = 0;
-		for (int y = 17; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
+		for (int y = 16; y >= 0; y--) { //get to the highest block in the first column (the column at x = 0)
 			if (field.GetBoard(0, y) == 1) {
 				yLevel = y+1;
 				break;
 			}
 		}
-		
-		System.out.println(yLevel);
 		
 		//int tempbumpcount=0;
 		for (int x = 1; x < 10; x++) {
@@ -670,61 +668,11 @@ public class Decision {
 			}
 		}
 		
-		//High wells
-		//At x = 0
-		
-		/*for (int y = 17; y >= 0; y--) {
-			if (field.GetBoard(0, y) == 0) {
-				if (field.GetBoard(1, y) == 1) {
-					while (y >= 0 && field.GetBoard(0, y) == 0) {
-						y--;
-						field.ChangeScore(well);
-					}
-					break;
-				}
-			}
-			else {
-				break;
-			}
-		}
-		//At x = 10
-		for (int y = 17; y >= 0; y--) {
-			if (field.GetBoard(9, y) == 0) {
-				if (field.GetBoard(8, y) == 1) {
-					while (y >= 0 && field.GetBoard(9, y) == 0) {
-						y--;
-						field.ChangeScore(well);
-					}
-					break;
-				}
-			}
-			else {
-				break;
-			}
-		}
-		//And all the x in between
-		for (int x = 1; x < 9; x++) {
-			for (int y = 17; y >= 0; y--) {
-				if (field.GetBoard(x, y) == 0) {
-					if (field.GetBoard(x-1, y) + field.GetBoard(x+1, y) == 2) {
-						while (y >= 0 && field.GetBoard(x, y) == 0) {
-							y--;
-							field.ChangeScore(well);
-						}
-						break;
-					}
-				}
-				else {
-					break;
-				}
-			}
-		}*/
-		
 		//System.out.println("Bump count: "+tempbumpcount+"\n");
 		/*System.out.println("Cost: "+field.GetScore());
 		Board.Setboard(field.GetBoard());
 		Board.Refresh();
-		Delay(1000);*/
+		Delay(5);*/
 		
 		return field;
 	}

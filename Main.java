@@ -16,14 +16,17 @@ public class Main {
 	private static int[] queuePieceColors = new int[7];
 	
 	public static void main (String[] args) {
-		configureForJstris();
+		configureForJstrisOnSchoolComputer();
 		
 		int[][] board = new int[10][21];
 		
 		/*System.out.println("test");
 		Board.Init();
 		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
-		TestTwo(6, 6, 15);
+		queue[0] = 4;
+		queue[1] = 3;
+		queue[2] = 5;
+		TestQueue(queue, 15);
 		Board.Refresh();
 		Delay(10000000);*/
 		
@@ -125,20 +128,20 @@ public class Main {
 	}
 	
 	private static void configureForJstrisOnSchoolComputer() {
-		topLeft[0] = 602;
-		topLeft[1] = 184;
+		topLeft[0] = 605;
+		topLeft[1] = 216;
 		slope[0] = 24;
 		slope[1] = 24;
-		piecePos[0][0] = 697;
-		piecePos[0][1] = 185;
-		piecePos[1][0] = 522;
-		piecePos[1][1] = 233;
-		gamePos[0] = 800;
-		gamePos[1] = 400;
+		piecePos[0][0] = 700;
+		piecePos[0][1] = 212;
+		piecePos[1][0] = 521;
+		piecePos[1][1] = 264;
+		gamePos[0] = 700;
+		gamePos[1] = 500;
 		
 		for (int x = 2; x < piecePos.length; x++) {
-			piecePos[x][0] = 897;
-			piecePos[x][1] = 232 + (72*(x-2));
+			piecePos[x][0] = 898;
+			piecePos[x][1] = 265 + (72*(x-2));
 		}
 		
 		pieceColors[0] = 159;
@@ -194,9 +197,9 @@ public class Main {
 		}
 	}
 	
-	private static void Test(int[] queue, int y1) {
+	private static void TestQueue(int[] queue, int y1) {
 		Boardstate result = Decision.FindBestPlacement(queue, Board.GetBoard());
-		
+		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
 		Board.EditBoard(result.GetPieceData()[0][0], result.GetPieceData()[0][1]+y1, 1);
 		Board.EditBoard(result.GetPieceData()[1][0], result.GetPieceData()[1][1]+y1, 1);
 		Board.EditBoard(result.GetPieceData()[2][0], result.GetPieceData()[2][1]+y1, 1);
