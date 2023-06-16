@@ -14,5 +14,5 @@ private static final int hole = -80;
 private static final int holeCover = -10;  
 private static final int bump = -6;  
 private static final int stackSize = -3;  
-private static final int stackSizeSquared = -3;  
-private static final int[] clears = {0, -70, -50, 20, 40};  
+private static final int stackSizeSquared = -2;  
+private static final int[] clears = {0, -70, -50, -30, 80};  
