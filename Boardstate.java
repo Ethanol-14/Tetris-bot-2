@@ -4,6 +4,7 @@ public class Boardstate {
 	private int[][] pieceData = new int[4][2];
 	private int[] movementAndScore = new int[3];
 	private int[][] board = new int[10][21];
+	private boolean active = true;
 	
 	//object declaration
 	public Boardstate() {}
@@ -57,6 +58,10 @@ public class Boardstate {
 		return movementAndScore[i];
 	}
 	
+	public boolean IsActive() {
+		return active;
+	}
+	
 	public void SetPiece(int _piece) {
 		piece = _piece;
 	}
@@ -97,5 +102,9 @@ public class Boardstate {
 	public void SetBoardAndScore(Boardstate _field) {
 		movementAndScore[2] = _field.GetScore();
 		board = _field.GetBoard();
+	}
+	
+	public void SetActivity(boolean activity) {
+		active = activity;
 	}
 }

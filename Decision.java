@@ -7,9 +7,9 @@ public class Decision {
 	//private static final int well = -8;
 	private static final int[] clears = {0, -70, -50, -30, 80};
 	
-	public static Boardstate FindBestPlacement(int[] queue, int [][] board) {
+	public static Boardstate FindBestPlacement(int[] queue, int pool, int [][] board) {
 		//the queue is an integer array that represents the piece queue
-		//the poolSize is the accepted pool size that the bot will use for lookahead. for example, poolSize = 5 means that the bot will take the 5 best placements of the current piece then use those to update the boardstate and lookahead
+		//the pool is a number from 0 to 100 of the rough percentage of tree you are not trimming off. ex; if you set it to 10 it will only take around the top 10% best placements for further planning
 		//board is a 2D array of 0s and 1s that represent the board state
 
 		int highscoreIndex = 1;
@@ -33,16 +33,28 @@ public class Decision {
 			}
 			
 			//find average cost of all combinations
-			int avgScore = 0;
+			int threshold = 0;
+			int lowestScore = fields[0].GetScore();
+			int highestScore = fields[0].GetScore();
+			
 			for (int i = 0; i < fields.length; i++) {
-				avgScore += fields[i].GetScore();
+				
+				threshold = fields[i].GetScore();
+				
+				if (threshold > highestScore) {
+					highestScore = threshold;
+				}
+				else if (threshold < lowestScore) {
+					lowestScore = threshold;
+				}
 			}
-			avgScore /= fields.length;
+			
+			threshold = ((lowestScore*pool) + (highestScore*(100-pool))) / 100;
 			
 			//test everything above average
 			for (int i = 0; i < fields.length; i++) {
-				if (fields[i].GetScore() > avgScore) {
-					Boardstate tempField = FindBestPlacement(updatedQueue, fields[i].GetBoard());
+				if (fields[i].GetScore() >= threshold) {
+					Boardstate tempField = FindBestPlacement(updatedQueue, pool, fields[i].GetBoard());
 					fields[i].ChangeScore(tempField.GetScore());
 					fields[i].SetBoard(tempField.GetBoard());
 					

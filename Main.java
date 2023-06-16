@@ -2,6 +2,7 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 4;
+	private static int pool = 5;
 	
 	private static int delay = 10;
 	private static int movementDelay = 10;
@@ -78,8 +79,8 @@ public class Main {
 				}
 			}
 			else {
-				path = Decision.FindBestPlacement(queue, board).GetMovementAndScore();
-				holdPath = Decision.FindBestPlacement(holdQueue, board).GetMovementAndScore();
+				path = Decision.FindBestPlacement(queue, pool, board).GetMovementAndScore();
+				holdPath = Decision.FindBestPlacement(holdQueue, pool, board).GetMovementAndScore();
 				
 				if (path[2] >= holdPath[2]) {
 					Screen.OutputMovement(path, movementDelay, false);
@@ -197,8 +198,8 @@ public class Main {
 		}
 	}
 	
-	private static void TestQueue(int[] queue, int y1) {
-		Boardstate result = Decision.FindBestPlacement(queue, Board.GetBoard());
+	private static void TestQueue(int[] queue, int _pool, int y1) {
+		Boardstate result = Decision.FindBestPlacement(queue, _pool, Board.GetBoard());
 		Board.Setboard(Screen.DetermineBoardData(topLeft, slope));
 		Board.EditBoard(result.GetPieceData()[0][0], result.GetPieceData()[0][1]+y1, 1);
 		Board.EditBoard(result.GetPieceData()[1][0], result.GetPieceData()[1][1]+y1, 1);
