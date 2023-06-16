@@ -16,7 +16,7 @@ public class Main {
 	private static int[] queuePieceColors = new int[7];
 	
 	public static void main (String[] args) {
-		configureForJstrisOnSchoolComputer();
+		configureForJstris();
 		
 		int[][] board = new int[10][21];
 		
@@ -51,7 +51,7 @@ public class Main {
 		int failCount = 0;
 		int piece = 0;
 		int[] path = new int[3];
-		int[] queuePath = new int[3];
+		int[] holdPath = new int[3];
 		
 		while (true) {
 			board = Screen.DetermineBoardData(topLeft, slope);
@@ -79,13 +79,13 @@ public class Main {
 			}
 			else {
 				path = Decision.FindBestPlacement(queue, board).GetMovementAndScore();
-				queuePath = Decision.FindBestPlacement(holdQueue, board).GetMovementAndScore();
+				holdPath = Decision.FindBestPlacement(holdQueue, board).GetMovementAndScore();
 				
-				if (path[2] >= queuePath[2]) {
+				if (path[2] >= holdPath[2]) {
 					Screen.OutputMovement(path, movementDelay, false);
 				}
 				else {
-					Screen.OutputMovement(queuePath, movementDelay, true);
+					Screen.OutputMovement(holdPath, movementDelay, true);
 				}
 			}
 			Delay(10); //allow time for the screen itself to refresh

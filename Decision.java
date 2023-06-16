@@ -3,9 +3,9 @@ public class Decision {
 	private static final int holeCover = -10;
 	private static final int bump = -6;
 	private static final int stackSize = -3;
-	private static final int stackSizeSquared = -4;
+	private static final int stackSizeSquared = -2;
 	//private static final int well = -8;
-	private static final int[] clears = {0, -50, -30, 10, 40};
+	private static final int[] clears = {0, -70, -50, -30, 80};
 	
 	public static Boardstate FindBestPlacement(int[] queue, int [][] board) {
 		//the queue is an integer array that represents the piece queue
@@ -32,14 +32,29 @@ public class Decision {
 				updatedQueue[i] = queue[i+1];
 			}
 			
+			//find average cost of all combinations
+			int avgScore = 0;
 			for (int i = 0; i < fields.length; i++) {
-				Boardstate tempField = FindBestPlacement(updatedQueue, fields[i].GetBoard());
-				fields[i].ChangeScore(tempField.GetScore());
-				fields[i].SetBoard(tempField.GetBoard());
+				avgScore += fields[i].GetScore();
+			}
+			avgScore /= fields.length;
+			
+			//test everything above average
+			for (int i = 0; i < fields.length; i++) {
+				if (fields[i].GetScore() > avgScore) {
+					Boardstate tempField = FindBestPlacement(updatedQueue, fields[i].GetBoard());
+					fields[i].ChangeScore(tempField.GetScore());
+					fields[i].SetBoard(tempField.GetBoard());
+					
+					highscoreIndex = i; //prevent the next for loop from trying to GetScore from a null fields[i]
+				}
+				else {
+					fields[i] = null;
+				}
 			}
 			
 			for (int i = 1; i < fields.length; i++) {
-				if (fields[i].GetScore() > fields[highscoreIndex].GetScore()) {
+				if (fields[i] != null && (fields[i].GetScore() > fields[highscoreIndex].GetScore())) {
 					highscoreIndex = i;
 				}
 			}
@@ -650,6 +665,7 @@ public class Decision {
 					//tempbumpcount++;
 					
 					if (yLevel >= 18) { //too high
+						yLevel--;
 						break;
 					}
 				}
