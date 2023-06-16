@@ -4,7 +4,6 @@ public class Decision {
 	private static final int bump = -6;
 	private static final int stackSize = -3;
 	private static final int stackSizeSquared = -2;
-	//private static final int well = -8;
 	private static final int[] clears = {0, -70, -50, -30, 80};
 	
 	public static Boardstate FindBestPlacement(int[] queue, int pool, int [][] board) {

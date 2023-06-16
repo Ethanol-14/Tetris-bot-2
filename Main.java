@@ -2,10 +2,10 @@ public class Main {
 	
 	//Parameters
 	private static int depth = 4;
-	private static int pool = 5;
+	private static int pool = 70;
 	
 	private static int delay = 10;
-	private static int movementDelay = 10;
+	private static int movementDelay = 5;
 
 	private static int[] queue = new int[depth];
 	private static int[] holdQueue = new int[depth];
